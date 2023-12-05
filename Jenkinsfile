@@ -1,6 +1,5 @@
 pipeline {
     agent any
-    
     environment {'https://github.com/Aymen568/CoT_health_monit/.git'
         GITHUB_CREDENTIALS = credentials('githubtoken')
         WILDFLY_HOME = '/opt/wildfly'
