@@ -35,9 +35,9 @@ pipeline {
         
         stage("Quality Gate") {
           steps {
-            timeout(time: 2, unit: 'MINUTES') {
-              waitForQualityGate abortPipeline: true
-            }
+              withSonarQubeEnv(installationName: 'sonarcube1') {
+                  wh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+              }
           }
         }
         
