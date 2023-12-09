@@ -4,7 +4,7 @@ pipeline {
         WILDFLY_HOME = '/opt/wildfly'
     }
     tools {
-        maven 'Maven 3.6.3'
+        maven 'maven'
     }
     
     stages {
