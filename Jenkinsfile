@@ -1,10 +1,8 @@
 pipeline {
     agent any
-    environment {'https://github.com/Aymen568/CoT_health_monit.git'
-        GITHUB_CREDENTIALS = credentials('githubtoken')
+    environment {
         WILDFLY_HOME = '/opt/wildfly'
         M3_HOME = '/opt/maven'
-        PROJECT_DIR = 'Cot_project'  // Update to your actual project directory
     }
     
     stages {
@@ -13,7 +11,6 @@ pipeline {
                 echo " env ${ENV}"
                 echo "GITHUB_REPO_URL: ${GITHUB_REPO_URL}"
                 echo "WILDFLY_HOME: ${WILDFLY_HOME}"
-                echo "PROJECT_DIR: ${PROJECT_DIR}"
                 echo "M3_HOME: ${M3_HOME}"
                 echo "PATH: ${PATH}"
             }
