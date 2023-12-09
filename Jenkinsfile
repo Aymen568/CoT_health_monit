@@ -8,11 +8,9 @@ pipeline {
     stages {
         stage('Initialization') {
             steps {
-                echo " env ${ENV}"
-                echo "GITHUB_REPO_URL: ${GITHUB_REPO_URL}"
+                
                 echo "WILDFLY_HOME: ${WILDFLY_HOME}"
                 echo "M3_HOME: ${M3_HOME}"
-                echo "PATH: ${PATH}"
             }
         }
         
