@@ -12,7 +12,6 @@ pipeline {
             steps {
                 
                 echo "WILDFLY_HOME: ${WILDFLY_HOME}"
-                echo "M3_HOME: ${M3_HOME}"
             }
         }
         
