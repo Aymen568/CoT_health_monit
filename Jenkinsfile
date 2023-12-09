@@ -2,7 +2,9 @@ pipeline {
     agent any
     environment {
         WILDFLY_HOME = '/opt/wildfly'
-        M3_HOME = '/opt/maven'
+    }
+    tools {
+        maven 'Maven 3.6.3'
     }
     
     stages {
@@ -36,11 +38,10 @@ pipeline {
         stage("Quality Gate") {
           steps {
               withSonarQubeEnv(installationName: 'sonarcube1') {
-                  sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+                 sh '/usr/share/maven/bin/mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
               }
           }
         }
-        
         stage('Deploy to WildFly') {
             steps {
                 echo "Deploy"
