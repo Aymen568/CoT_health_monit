@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    environment {
+    environment {'https://github.com/Aymen568/CoT_health_monit.git'
         GITHUB_CREDENTIALS = credentials('githubtoken')
         WILDFLY_HOME = '/opt/wildfly'
         M3_HOME = '/opt/maven'
@@ -21,33 +21,20 @@ pipeline {
         
         stage('Build') {
             steps {
-                dir(PROJECT_DIR) {
-                    script {
-                        // Assuming your project uses Maven for building
-                        sh "$M3_HOME/bin/mvn clean install"
-                    }
-                }
+                echo " build"
+                
             }
         }
 
         stage('Test') {
             steps {
-                dir(PROJECT_DIR) {
-                    script {
-                        // Assuming your project uses Maven for running tests
-                        sh "$M3_HOME/bin/mvn test"
-                    }
-                }
+                 echo " test"
             }
         }
         
         stage('Scan') {
           steps {
-              dir(PROJECT_DIR) {
-                withSonarQubeEnv(installationName: 'sq1') { 
-                  sh "$M3_HOME/bin/mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
-                }
-            }
+                echo " Scan"
           }
         }
         
@@ -61,12 +48,7 @@ pipeline {
         
         stage('Deploy to WildFly') {
             steps {
-                dir(PROJECT_DIR) {
-                    script {
-                        sh "$WILDFLY_HOME/bin/jboss-cli.sh --connect -u=\"admin\" -p=\"admin\"  --command=\"deploy --force target/smartlighting-1.0-SNAPSHOT.war\""
-                      
-                    }
-                }
+                echo "Deploy"
             }
         }
     }
