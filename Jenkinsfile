@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        MAVEN_HOME = tool 'Maven' // Use the Maven tool configured in Jenkins
-    }
     stages {
         stage('Checkout') {
             steps {
