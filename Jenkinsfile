@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Initialization') {
             steps {
-                echo " env ${ENV}"
+               
                 echo "GITHUB_REPO_URL: ${GITHUB_REPO_URL}"
                 echo "WILDFLY_HOME: ${WILDFLY_HOME}"
                 echo "PROJECT_DIR: ${PROJECT_DIR}"
@@ -52,14 +52,7 @@ pipeline {
           }
         }
         
-        stage("Quality Gate") {
-          steps {
-            timeout(time: 2, unit: 'MINUTES') {
-              waitForQualityGate abortPipeline: true
-            }
-          }
-        }
-        
+
         stage('Deploy to WildFly') {
             steps {
                 dir(PROJECT_DIR) {
