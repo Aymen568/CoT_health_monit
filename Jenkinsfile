@@ -6,60 +6,66 @@ pipeline {
         GITHUB_CREDENTIALS = credentials('githubtoken')
         WILDFLY_HOME = '/opt/wildfly'
         M3_HOME = '/opt/apache-maven-3.8.8'
-        PROJECT_DIR = 'code/api/Health_monitoring'  // Update to your actual project directory
+        PROJECT_DIR = 'code/api/Health-monitoring'  // Update to your actual project directory
     }
     
     stages {
         stage('Initialization') {
             steps {
-               
                 echo "GITHUB_REPO_URL: ${GITHUB_REPO_URL}"
                 echo "WILDFLY_HOME: ${WILDFLY_HOME}"
                 echo "PROJECT_DIR: ${PROJECT_DIR}"
                 echo "M3_HOME: ${M3_HOME}"
             }
         }
-        
-        stage('Build') {
+
+    
+        stage('Code Analysis') {
             steps {
                 dir(PROJECT_DIR) {
                     script {
-                        // Assuming your project uses Maven for building
-                        sh "$M3_HOME/bin/mvn clean install"
+                        withSonarQubeEnv(installationName: 'sonarcube1') {
+                            sh "$M3_HOME/bin/mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
+                        }
                     }
                 }
             }
         }
 
-        stage('Test') {
+        stage("Quality Gate") {
             steps {
-                dir(PROJECT_DIR) {
-                    script {
-                        // Assuming your project uses Maven for running tests
-                        sh "$M3_HOME/bin/mvn test"
-                    }
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
-        
-        stage('Scan') {
-          steps {
-              dir(PROJECT_DIR) {
-                withSonarQubeEnv(installationName: 'sonarcube1') { 
-                  sh "$M3_HOME/bin/mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
-                }
-            }
-          }
-        }
-        
 
         stage('Deploy to WildFly') {
             steps {
                 dir(PROJECT_DIR) {
                     script {
-                        sh "$WILDFLY_HOME/bin/jboss-cli.sh --connect -u=\"admin\" -p=\"admin\"  --command=\"deploy --force target/Health-monitoring-1.0-SNAPSHOT.war\""
-                      
+                        sh "$WILDFLY_HOME/bin/jboss-cli.sh --connect -u=\"admin\" -p=\"admin\" --command=\"deploy --force target/Health-monitoring-1.0-SNAPSHOT.war\""
                     }
+                }
+            }
+        }
+
+
+        stage('Merge to Staging') {
+            when {
+                // Run this stage only if the previous stage was successful
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                script {
+                    // Switch to the staging branch
+                    sh 'git checkout staging'
+
+                    // Merge changes from the dev branch
+                    sh 'git merge origin/dev'
+
+                    // Push changes to the remote repository
+                    sh 'git push origin staging'
                 }
             }
         }
