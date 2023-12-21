@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+  <persistence-unit name="default">
+
+      <class>tn.cot.healthmonitoring.entities.User</class>
+      <class>tn.cot.healthmonitoring.entities.Sensor</class>
+      <class>tn.cot.healthmonitoring.entities.Ecg</class>
+      <class>tn.cot.healthmonitoring.entities.Displayer</class>
+      <class>tn.cot.healthmonitoring.entities.Model</class>
+      <class>tn.cot.healthmonitoring.entities.FieldPropertyVisibilityStrategy</class>
+  </persistence-unit>
+</persistence>
