@@ -38,13 +38,14 @@ pipeline {
                 }
             }
         }
-        steps {
-            script {
-              // requires SonarQube Scanner 2.8+
-              scannerHome = tool 'sonarcube1'
-            }
-            withSonarQubeEnv('SonarQube Scanner') {
-              sh "${scannerHome}/bin/sonar-scanner"
+       stage('Build') {
+            steps {
+                dir(PROJECT_DIR) {
+                    script {
+                        // Assuming your project uses Maven for building
+                        sh "$M3_HOME/bin/mvn clean install"
+                    }
+                }
             }
         }
 
