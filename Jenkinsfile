@@ -42,14 +42,15 @@ pipeline {
             }
         }
         
-        stage('Scan') {
-          steps {
-              dir(PROJECT_DIR) {
-                withSonarQubeEnv(installationName: 'sonarcube1') { 
-                  sh "$M3_HOME/bin/mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
-                }
+        steps {
+            script {
+              // requires SonarQube Scanner 2.8+
+              scannerHome = tool 'sonarcube1'
             }
-          }
+            withSonarQubeEnv('SonarQube Scanner') {
+              sh "${scannerHome}/bin/sonar-scanner"
+            }
+
         }
         
 
