@@ -6,7 +6,7 @@ pipeline {
         GITHUB_CREDENTIALS = credentials('githubtoken')
         WILDFLY_HOME = '/opt/wildfly'
         M3_HOME = '/opt/apache-maven-3.8.8'
-        PROJECT_DIR = 'code/api/Health_monitoring'  // Update to your actual project directory
+        PROJECT_DIR = 'code/api/Health-monitoring'  // Update to your actual project directory
     }
     
     stages {
