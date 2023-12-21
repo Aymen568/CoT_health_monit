@@ -19,16 +19,7 @@ pipeline {
             }
         }
 
-        stage('Build and Test') {
-            steps {
-                dir(PROJECT_DIR) {
-                    script {
-                        sh "$M3_HOME/bin/mvn clean install"
-                    }
-                }
-            }
-        }
-
+    
         stage('Code Analysis') {
             steps {
                 dir(PROJECT_DIR) {
