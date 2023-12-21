@@ -1,23 +1,64 @@
 pipeline {
     agent any
+    
+    environment {
+        GITHUB_REPO_URL = 'https://github.com/Aymen568/CoT_health_monit.git'
+        GITHUB_CREDENTIALS = credentials('githubtoken')
+        WILDFLY_HOME = '/opt/wildfly'
+        M3_HOME = '/opt/apache-maven-3.8.8'
+        PROJECT_DIR = 'code/api/Health-monitoring'  // Update to your actual project directory
+    }
+    
     stages {
-        stage('Checkout') {
+        stage('Initialization') {
             steps {
-                script {
-                    checkout scm
+                echo "GITHUB_REPO_URL: ${GITHUB_REPO_URL}"
+                echo "WILDFLY_HOME: ${WILDFLY_HOME}"
+                echo "PROJECT_DIR: ${PROJECT_DIR}"
+                echo "M3_HOME: ${M3_HOME}"
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
+                dir(PROJECT_DIR) {
+                    script {
+                        sh "$M3_HOME/bin/mvn clean install test"
+                    }
                 }
             }
         }
 
-        stage('Verify and Test') {
+        stage('Code Analysis') {
             steps {
-                script {
-                    // Run your verification and testing commands here
-                    // For example:
-                    sh 'mvn clean verify'
+                dir(PROJECT_DIR) {
+                    script {
+                        withSonarQubeEnv(installationName: 'sonarcube1') {
+                            sh "$M3_HOME/bin/mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
+                        }
+                    }
                 }
             }
         }
+
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+        stage('Deploy to WildFly') {
+            steps {
+                dir(PROJECT_DIR) {
+                    script {
+                        sh "$WILDFLY_HOME/bin/jboss-cli.sh --connect -u=\"admin\" -p=\"admin\" --command=\"deploy --force target/Health-monitoring-1.0-SNAPSHOT.war\""
+                    }
+                }
+            }
+        }
+
 
         stage('Merge to Staging') {
             when {
