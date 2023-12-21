@@ -8,7 +8,6 @@ pipeline {
         M3_HOME = '/opt/apache-maven-3.8.8'
         PROJECT_DIR = 'code/api/Health-monitoring'  // Update to your actual project directory
     }
-    
     stages {
         stage('Initialization') {
             steps {
@@ -19,7 +18,6 @@ pipeline {
                 echo "M3_HOME: ${M3_HOME}"
             }
         }
-        
         stage('Build') {
             steps {
                 dir(PROJECT_DIR) {
@@ -30,7 +28,6 @@ pipeline {
                 }
             }
         }
-
         stage('Test') {
             steps {
                 dir(PROJECT_DIR) {
@@ -41,7 +38,6 @@ pipeline {
                 }
             }
         }
-        
         steps {
             script {
               // requires SonarQube Scanner 2.8+
@@ -50,9 +46,7 @@ pipeline {
             withSonarQubeEnv('SonarQube Scanner') {
               sh "${scannerHome}/bin/sonar-scanner"
             }
-
         }
-        
 
         stage('Deploy to WildFly') {
             steps {
