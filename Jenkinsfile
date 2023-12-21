@@ -38,6 +38,24 @@ pipeline {
                 }
             }
         }
+        
+        stage('Scan') {
+          steps {
+              dir(PROJECT_DIR) {
+                withSonarQubeEnv(installationName: 'sonarcube1') { 
+                  sh "$M3_HOME/bin/mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
+                }
+            }
+          }
+        }
+        
+        stage("Quality Gate") {
+          steps {
+            timeout(time: 2, unit: 'MINUTES') {
+              waitForQualityGate abortPipeline: true
+            }
+          }
+        }
        stage('Build') {
             steps {
                 dir(PROJECT_DIR) {
