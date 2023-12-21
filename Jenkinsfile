@@ -23,7 +23,7 @@ pipeline {
             steps {
                 dir(PROJECT_DIR) {
                     script {
-                        sh "$M3_HOME/bin/mvn clean install test"
+                        sh "$M3_HOME/bin/mvn clean install"
                     }
                 }
             }
