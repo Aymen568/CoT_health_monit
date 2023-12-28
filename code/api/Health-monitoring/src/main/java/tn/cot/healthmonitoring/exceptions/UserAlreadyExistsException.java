@@ -1,2 +1,10 @@
-package tn.cot.healthmonitoring.Exceptions;public class UserAlreadyExistsException {
+package tn.cot.healthmonitoring.exceptions;
+
+public class UserAlreadyExistsException extends  RuntimeException{
+    String message;
+    public UserAlreadyExistsException(String msg) {
+        super(msg);
+        this.message=msg ;
+    }
+
 }

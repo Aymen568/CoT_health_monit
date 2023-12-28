@@ -1,20 +1,18 @@
 package tn.cot.healthmonitoring.security;
 
-import tn.supcom.exceptions.UserAlreadyExistsException;
-import tn.supcom.exceptions.UserForbiddenException;
-import tn.supcom.exceptions.UserNotAuthorizedException;
-import tn.supcom.exceptions.UserNotFoundException;
-import tn.supcom.models.Role;
-import tn.supcom.models.User;
-import tn.supcom.repository.UserRepository;
-import tn.supcom.util.Argon2Utility;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.SecurityContext;
+import tn.cot.healthmonitoring.entities.Role;
+import tn.cot.healthmonitoring.entities.User;
+import tn.cot.healthmonitoring.exceptions.*;
+import tn.cot.healthmonitoring.repositories.UserRepository;
+import tn.cot.healthmonitoring.utils.Argon2Utility;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.security.enterprise.SecurityContext;
+
 import java.security.Principal;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @ApplicationScoped
 public class SecurityService {
@@ -105,7 +103,7 @@ public class SecurityService {
         return user;
     }
 
-    public List<User> getUsers() {
+    public Stream<User> getUsers() {
         return userRepository.findAll() ;
 
     }

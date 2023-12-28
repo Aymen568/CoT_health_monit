@@ -1,4 +1,4 @@
-package tn.cot.healthmonitoring.controllers;
+package tn.cot.healthmonitoring.repositories;
 
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.ApplicationScoped;

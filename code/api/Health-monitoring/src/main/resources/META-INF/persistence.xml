@@ -8,8 +8,7 @@
       <class>tn.cot.healthmonitoring.entities.User</class>
       <class>tn.cot.healthmonitoring.entities.Sensor</class>
       <class>tn.cot.healthmonitoring.entities.Ecg</class>
-      <class>tn.cot.healthmonitoring.entities.Displayer</class>
       <class>tn.cot.healthmonitoring.entities.Model</class>
-      <class>tn.cot.healthmonitoring.entities.FieldPropertyVisibilityStrategy</class>
+      <class>tn.cot.healthmonitoring.utils.FieldPropertyVisibilityStrategy</class>
   </persistence-unit>
 </persistence>

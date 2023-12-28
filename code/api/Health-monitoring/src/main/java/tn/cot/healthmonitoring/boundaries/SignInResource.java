@@ -1,28 +1,29 @@
 package tn.cot.healthmonitoring.boundaries;
 
+import jakarta.ejb.EJBException;
+
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import com.nimbusds.jose.*;
 import org.json.*;
+import tn.cot.healthmonitoring.controllers.UserManager;
+import tn.cot.healthmonitoring.utils.Identity;
+import tn.cot.healthmonitoring.utils.OAuth2PKCE;
+
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.Base64;
-import smart.garbage.cot.util.OAuth2PKCE;
-import smart.garbage.cot.controllers.UserManager;
-import smart.garbage.cot.util.Identity;
+
 
 
 
 // Implementation of the SignIn method following Oauth2 and PKCE flow
 @Path("/")
 @RequestScoped
-public class SignInEndpoint {
+public class SignInResource {
     public final static String XSS_COOKIE_NAME = "xssCookie";
 
     @EJB
@@ -44,8 +45,11 @@ public class SignInEndpoint {
                 oAuth2PKCE.generateXSSToken(credentials[0],uriInfo.getBaseUri().getPath()),
                 uriInfo.getBaseUri().getPath(),
                 uriInfo.getBaseUri().getHost(),"Secure Http Only Cookie",86400,true,true);
+        System.out.println(credentials[1]+ " "+ credentials[0]);
+        System.out.println("pre singing successfull");
         return Response .status(Response.Status.FOUND)
                 .cookie(cookie)
+                .header("Location", uriInfo.getBaseUri() + "home.html") // Set the redirect URL to home.html
                 .entity("{\"signInId\":\""+oAuth2PKCE.addChallenge(credentials[1],credentials[0])+ //Return SignInId
                         "\"}").build();
     }
@@ -58,13 +62,13 @@ public class SignInEndpoint {
         JSONObject obj = new JSONObject(json);
         String mail=obj.getString("mail"); //get the username password and signinId from the json object sent by the client
         String password=obj.getString("password");
-        String signInId=obj.getString("signInId");;
-        if(mail == null || password == null || signInId == null ||
-                mail.length()<4 || mail.length()>30 ){
+        String signInId=obj.getString("signInId");
+        if(mail == null || password == null || signInId == null || mail.length()<4 || mail.length()>30 ){
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"message\":\"Invalid Credentials!\"}").build();
         }
         try {
-            Identity identity = identityController.authenticate(mail,password);// check if the user exists and his password against the hashed argon2 password are valid
+            Identity identity = (Identity) identityController.authenticate(mail,password);// check if the user exists and his password against the hashed argon2 password are valid
+            System.out.println("authorisation in process");
             return Response.ok()
                     .entity("{\"authCode\":\""+oAuth2PKCE.generateAuthorizationCode(signInId,identity)+"\"}") //return authorization code
                     .build();
@@ -83,7 +87,8 @@ public class SignInEndpoint {
         String[] credentials = decoded.split("#");
         String token;
         try {
-            token = oAuth2PKCE.checkCode(credentials[0],credentials[1]);// verify the credentials and return the access token if the credentials match
+            token = oAuth2PKCE.checkCode(credentials[0],credentials[1]);
+            System.out.println("now return access token");// verify the credentials and return the access token if the credentials match
         } catch (Exception e) {
             return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\"}").build();
         }
@@ -107,7 +112,7 @@ public class SignInEndpoint {
 
             }
 
-            Identity identity = identityController.findByUsername(sb.toString()); //verify if the user exists in the database
+            Identity identity = (Identity) identityController.findByUsername(sb.toString()); //verify if the user exists in the database
             String token;
 
             try {
@@ -134,7 +139,7 @@ public class SignInEndpoint {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"message\":\"Invalid Credentials!\"}").build();
         }
         try {
-            Identity identity = identityController.authenticateadmin(mail,password);// check if the user exists and his password against the hashed argon2 password are valid
+            Identity identity = (Identity) identityController.authenticateAdmin(mail,password);// check if the user exists and his password against the hashed argon2 password are valid
             return Response.ok()
                     .entity("{\"authCode\":\""+oAuth2PKCE.generateAuthorizationCode(signInId,identity)+"\"}") //return authorization code
                     .build();

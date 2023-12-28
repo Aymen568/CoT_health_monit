@@ -1,19 +1,22 @@
-package tn.cot.healthmonitoring.utils;
+package tn.cot.healthmonitoring.filters;
 
 import jakarta.annotation.Priority;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.Priorities;
-import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
-import jakarta.ws.rs.core.*;
-import jakarta.ws.rs.ext.Provider;
+import jakarta.ws.rs.container.ResourceInfo;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.Provider;
 import java.lang.reflect.Method;
 import java.util.Base64;
+
 @Provider
 @Priority(Priorities.AUTHORIZATION)
-public class AuthorizationFilter implements ContainerRequestFilter { // The authorization filter will block requests if the user's role is not permitted to access the resource.
+public class AuthorizationFilter implements ContainerRequestFilter {
+    // The authorization filter will block requests if the user's role is not permitted to access the resource.
     @Context
     private ResourceInfo resourceInfo;
     public final static String authorizePath = "/api/authorize";
@@ -30,18 +33,19 @@ public class AuthorizationFilter implements ContainerRequestFilter { // The auth
             return; // if the request path is equal to the signin or signup paths, the request is allowed  without an access token
         }
 
-        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION); // requests without valid authorization headers are blocked by the authentication token. Therefore, the authorization token is only active on tokens with headers
+        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+        // requests without valid authorization headers are blocked by the authentication token. Therefore, the authorization token is only active on tokens with headers
         RolesAllowed rolesAllowed=null;
         if (method!=null){
-            rolesAllowed = method.getAnnotation(RolesAllowed.class); // get the declared variables in rolesallowed if it exists
+            rolesAllowed = method.getAnnotation(RolesAllowed.class);
+            // get the declared variables in rolesallowed if it exists
             System.out.println(rolesAllowed);}
         System.out.println(method);
         System.out.println("ok");
         System.out.println(rolesAllowed);
 
-
-
-        String authenticationToken = authorizationHeader.substring(7); // get access token from "Bearer accestoken"
+        String authenticationToken = authorizationHeader.substring(7);
+        // get access token from "Bearer accestoken"
         if (rolesAllowed != null) {//if the method is annotated with rolesallowed, perform authorize check
             if (Authorize(rolesAllowed.value(),authenticationToken)){
                 System.out.println(rolesAllowed.value());
@@ -67,7 +71,8 @@ public class AuthorizationFilter implements ContainerRequestFilter { // The auth
         for (final String role : rolesAllowed) {
             System.out.println(role);
             System.out.println(jwtrole);
-            if (jwtrole.equals(role)) { //if user's role is equal to one of the roles that exist in roles allowed, return true and allow request
+            if (jwtrole.equals(role)) {
+                //if user's role is equal to one of the roles that exist in roles allowed, return true and allow request
                 return true;
             }
         }

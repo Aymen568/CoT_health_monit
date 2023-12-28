@@ -1,4 +1,4 @@
-package tn.cot.healthmonitoring.entities;
+package tn.cot.healthmonitoring.utils;
 
 import jakarta.json.bind.config.PropertyVisibilityStrategy;
 import java.lang.reflect.Field;

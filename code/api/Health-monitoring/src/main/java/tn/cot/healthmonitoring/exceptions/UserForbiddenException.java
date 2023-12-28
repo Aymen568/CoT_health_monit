@@ -1,2 +1,5 @@
-package tn.cot.healthmonitoring.Exceptions;public class UserForbiddenException {
+package tn.cot.healthmonitoring.exceptions;
+
+public class UserForbiddenException extends  RuntimeException{
+
 }

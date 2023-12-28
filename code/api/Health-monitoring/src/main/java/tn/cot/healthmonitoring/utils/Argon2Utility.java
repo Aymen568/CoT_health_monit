@@ -3,9 +3,11 @@ package tn.cot.healthmonitoring.utils;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import de.mkammerer.argon2.Argon2Factory.Argon2Types;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
 
+@ApplicationScoped
 public class Argon2Utility {
     private static final Config config = ConfigProvider.getConfig();
     private static final int saltLength;

@@ -1,17 +1,18 @@
-package tn.cot.healthmonitoring.controllers;
+package tn.cot.healthmonitoring.entities;
 
 
-public enum Role {   //Different roles for the user which are defined by a permsision value
-    Surfer(1L),   // regular user
-    Administrator(2L); // administrator of the application
+import java.util.function.Supplier;
 
-    private final long value;
-    Role(long value){
-        this.value = value;
+public enum Role implements Supplier<String> {
+    ADMIN, CLIENT;
+
+    @Override
+    public String get() {
+        return this.name();
     }
-
     public long getValue() {
-        return value;
+        if (this ==ADMIN) {
+            return 1L;
+        } else return 2L;
     }
-
 }

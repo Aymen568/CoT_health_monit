@@ -1,2 +1,4 @@
-package tn.cot.healthmonitoring.Exceptions;public class UserNotAuthorizedException {
+package tn.cot.healthmonitoring.exceptions;
+
+public class UserNotAuthorizedException  extends RuntimeException{
 }
