@@ -3,6 +3,7 @@ package tn.cot.healthmonitoring.services;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Singleton
+@ApplicationScoped
 @Startup
 public class MqttConnection {
     List<Double> mqttDataList = new ArrayList<>();
