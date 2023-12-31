@@ -14,8 +14,7 @@ public interface SensorRepository extends CrudRepository<Sensor, String> {
 
     List<Sensor> findByUserId(String userid);
 
-    Optional<Sensor> findById(int var1);
+    Optional<Sensor> findById(long var1);
     List<String> getPredictionHistory(String userId);
 
-
-}
+    }

@@ -14,6 +14,7 @@ import tn.cot.healthmonitoring.repositories.UserRepository;
 import tn.cot.healthmonitoring.utils.Argon2Utility;
 
 
+import java.util.Optional;
 import java.util.function.Supplier;
 @ApplicationScoped
 @Path("user")
@@ -26,20 +27,29 @@ public class SignUpResource {
     private UserRepository repository;
     @POST // Post method that receives User credentials from sign up in JSON format and saves it in the database
     public Response save(User user) {
-        if (user.getEmail()==null || user.getFullname()==null || user.getPassword()==null || user.getMobile()==null || user.getEmergency()==null){
+        if (user.getEmail() == null || user.getFullname() == null || user.getPassword() == null || user.getMobile() == null || user.getEmergency() == null) {
             Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Empty credentials, please enter your credentials")
                     .build();
         }
         try {
-            repository.findById(user.getEmail()).orElseThrow(); // If User already exists , the request cannot go through
-            return Response.status(Response.Status.UNAUTHORIZED).entity("{\"message\":\"user already exists!!!\"}").build();
-        } catch (Exception e) {
+            System.out.println("Received request for user: " + user.getEmail());
+            Optional<User> existingUser = repository.findById(user.getEmail());
+            if (existingUser.isPresent()) {
+                System.out.println("User with the same email already exists!");
+                return Response.status(Response.Status.CONFLICT)
+                        .entity("{\"message\":\"User with the same email already exists!!!\"}")
+                        .build();
+            }
             String password = user.getPassword();
             String passwordhash = Argon2Utility.hash(password.toCharArray()); // Hash the password tapped by the user before saving it in the database
             User userhash = new User(user.getEmail(), user.getFullname(), password, user.getMobile(), user.getEmergency()); //create new User entity with the new hashed password
             repository.save(userhash); // save the data in MongoDB
             return Response.ok().entity("{\"username created \":\"" + userhash.getFullname() + "\"}").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.CONFLICT)
+                    .entity("another unkonw error")
+                    .build();
         }
 
 

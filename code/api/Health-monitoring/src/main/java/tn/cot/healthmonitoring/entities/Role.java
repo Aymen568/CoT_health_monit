@@ -10,7 +10,7 @@ public enum Role implements Supplier<String> {
     public String get() {
         return this.name();
     }
-    public long getValue() {
+    public long getRole() {
         if (this ==ADMIN) {
             return 1L;
         } else return 2L;

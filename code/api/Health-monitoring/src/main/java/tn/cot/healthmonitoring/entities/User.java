@@ -1,21 +1,20 @@
 package tn.cot.healthmonitoring.entities;
-
 import  tn.cot.healthmonitoring.utils.Argon2Utility;
 import jakarta.json.bind.annotation.JsonbVisibility;
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 import tn.cot.healthmonitoring.utils.FieldPropertyVisibilityStrategy;
-
 import java.util.*;
-
 import static tn.cot.healthmonitoring.entities.Role.CLIENT;
 
 @Entity("users")
 @JsonbVisibility(FieldPropertyVisibilityStrategy.class)
 public class User {
     @Id
+    @Column("email")
     private String email;
+
     @Column
     private String fullname;
     @Column
@@ -32,7 +31,7 @@ public class User {
     public User() {
     }
 
-    public User(String fullname, String email, String password,  String mobile, String emergency) {
+    public User( String email,String fullname, String password,  String mobile, String emergency) {
         this.fullname = fullname;
         this.email = email;
         this.password = password;
@@ -58,8 +57,12 @@ public class User {
         this.email = email;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Long getRole() {
+        if ("ADMIN".equals(roles)) {
+            return 1L;
+        } else {
+            return 0L;
+        }
     }
 
     public void setRoles(Set<Role> roles) {

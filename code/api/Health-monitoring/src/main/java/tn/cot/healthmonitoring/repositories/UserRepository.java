@@ -17,5 +17,4 @@ public interface UserRepository extends CrudRepository<User, String> {
     Stream<User>findByfullname(String var1);
     Optional<User> findByEmail(String email ) ;
 
-    void update(User user);
 }

@@ -153,7 +153,7 @@ public class OAuth2PKCE {
     private Role[] getRoles(Long permissionLevel) {
         Set<Role> roles = new HashSet<>();
         for(Role role: Role.values()){
-            if((permissionLevel & role.getValue()) != 0L){
+            if((permissionLevel & role.getRole()) != 0L){
                 roles.add(role);
             }
         }
@@ -161,8 +161,9 @@ public class OAuth2PKCE {
     }
 
     public String generateTokenFor(Identity identity) throws Exception {//generation of the jwt token
+        System.out.println("craeating tokens now");
         JsonArrayBuilder rolesBuilder = Json.createArrayBuilder();
-        for (Role role : getRoles(identity.getPermissionLevel())) {//the role is based on the permission level of the identity
+        for (Role role : getRoles(identity.getRole())) {//the role is based on the permission level of the identity
             rolesBuilder.add(role.toString());
         }
         long currentTime = System.currentTimeMillis() / 1000;
@@ -180,7 +181,7 @@ public class OAuth2PKCE {
                 new Payload(claimsBuilder.build().toString()));//create the jwt
 
         jwsObject.sign(signer); // sign the jwt with the private key
-
+        System.out.println(jwsObject);
         return jwsObject.serialize();
     }
     private static Mac hmac; //hmac will be used to provide integrity protection for the refresh tokens

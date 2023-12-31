@@ -16,10 +16,16 @@ public class SensorService {
     @Inject
     private SensorRepository sensorRepository;
 
-    public Sensor addSensor(Sensor sensor) {
-        // You can include additional business logic here if needed before saving the sensor
-        return sensorRepository.save(sensor);
+    public void addSensor(Sensor sensor) {
+        try {
+            // You can include additional business logic here if needed before saving the sensor
+            sensorRepository.save(sensor);
+        } catch (Exception e) {
+            System.out.println("Error somewhere: " + e.getMessage());
+            // You might want to handle the exception appropriately (log it, throw a custom exception, etc.)
+        }
     }
+
 
     public Optional<Sensor> findById(String sensorId) {
         return sensorRepository.findById(sensorId);

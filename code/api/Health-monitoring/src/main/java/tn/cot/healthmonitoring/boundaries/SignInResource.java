@@ -1,24 +1,21 @@
 package tn.cot.healthmonitoring.boundaries;
 
-import jakarta.ejb.EJBException;
-
 import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import com.nimbusds.jose.*;
 import org.json.*;
 import tn.cot.healthmonitoring.controllers.UserManager;
-import tn.cot.healthmonitoring.utils.Identity;
+import tn.cot.healthmonitoring.entities.User;
 import tn.cot.healthmonitoring.utils.OAuth2PKCE;
+import tn.cot.healthmonitoring.utils.Identity;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.Base64;
-
-
-
 
 // Implementation of the SignIn method following Oauth2 and PKCE flow
 @Path("/")
@@ -45,11 +42,8 @@ public class SignInResource {
                 oAuth2PKCE.generateXSSToken(credentials[0],uriInfo.getBaseUri().getPath()),
                 uriInfo.getBaseUri().getPath(),
                 uriInfo.getBaseUri().getHost(),"Secure Http Only Cookie",86400,true,true);
-        System.out.println(credentials[1]+ " "+ credentials[0]);
-        System.out.println("pre singing successfull");
         return Response .status(Response.Status.FOUND)
                 .cookie(cookie)
-                .header("Location", uriInfo.getBaseUri() + "home.html") // Set the redirect URL to home.html
                 .entity("{\"signInId\":\""+oAuth2PKCE.addChallenge(credentials[1],credentials[0])+ //Return SignInId
                         "\"}").build();
     }
@@ -63,12 +57,12 @@ public class SignInResource {
         String mail=obj.getString("mail"); //get the username password and signinId from the json object sent by the client
         String password=obj.getString("password");
         String signInId=obj.getString("signInId");
-        if(mail == null || password == null || signInId == null || mail.length()<4 || mail.length()>30 ){
+        if(mail == null || password == null || signInId == null ||
+                mail.length()<4 || mail.length()>30 ){
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"message\":\"Invalid Credentials!\"}").build();
         }
         try {
             Identity identity = (Identity) identityController.authenticate(mail,password);// check if the user exists and his password against the hashed argon2 password are valid
-            System.out.println("authorisation in process");
             return Response.ok()
                     .entity("{\"authCode\":\""+oAuth2PKCE.generateAuthorizationCode(signInId,identity)+"\"}") //return authorization code
                     .build();
@@ -87,8 +81,7 @@ public class SignInResource {
         String[] credentials = decoded.split("#");
         String token;
         try {
-            token = oAuth2PKCE.checkCode(credentials[0],credentials[1]);
-            System.out.println("now return access token");// verify the credentials and return the access token if the credentials match
+            token = oAuth2PKCE.checkCode(credentials[0],credentials[1]);// verify the credentials and return the access token if the credentials match
         } catch (Exception e) {
             return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\"}").build();
         }
@@ -139,10 +132,16 @@ public class SignInResource {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"message\":\"Invalid Credentials!\"}").build();
         }
         try {
-            Identity identity = (Identity) identityController.authenticateAdmin(mail,password);// check if the user exists and his password against the hashed argon2 password are valid
-            return Response.ok()
-                    .entity("{\"authCode\":\""+oAuth2PKCE.generateAuthorizationCode(signInId,identity)+"\"}") //return authorization code
-                    .build();
+            Identity identity = (Identity) identityController.authenticate(mail,password);
+            if (identity != null) {
+                return Response.ok()
+                        .entity("{\"authCode\":\"" + oAuth2PKCE.generateAuthorizationCode(signInId, identity) + "\"}")
+                        .build();
+            } else {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("{\"message\":\"Authentication failed!\"}")
+                        .build();
+            }
         } catch (EJBException e) {
             return Response.status(Response.Status.UNAUTHORIZED) //return status unauthorized if the conditions are not met
                     .entity("{\"message\":\""+e.getMessage()+"\"}").build();

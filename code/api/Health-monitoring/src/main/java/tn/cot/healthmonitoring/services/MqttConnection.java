@@ -8,15 +8,20 @@ import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import tn.cot.healthmonitoring.boundaries.WebsocketServer;
 import tn.cot.healthmonitoring.repositories.SensorRepository;
 import tn.cot.healthmonitoring.repositories.UserRepository;
 
 import javax.net.ssl.SSLSocketFactory;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Singleton
 @Startup
 public class MqttConnection {
-
+    List<Double> mqttDataList = new ArrayList<>();
+    private Double latestValue = 0.0; // Variable to store the latest MQTT value
     private static final Config config = ConfigProvider.getConfig();
     private final String uri = config.getValue("mqtt.uri", String.class);
     private final String username = config.getValue("mqtt.username", String.class);
@@ -27,9 +32,17 @@ public class MqttConnection {
 
     @Inject
     private UserRepository userRepository;
+    @Inject
+    private WebsocketServer webSocketServer;
 
+
+    public Double getLatestValue() {
+        // Return the latest MQTT value
+        return latestValue;
+    }
     @PostConstruct
     public void start() {
+
         try {
             System.out.println("\n --------------------------------------------------- \n");
             System.out.println("MQTT HAS BEEN STARTED");
@@ -74,6 +87,9 @@ public class MqttConnection {
                     // Todo: Implement logic for saving data to the database and notifying users
                     if (topic.equals("health")) {
                         System.out.println("health: " + message + " is successfully added");
+                        latestValue = Double.parseDouble(new String(message.getPayload()));
+                        mqttDataList.add( latestValue );
+                        webSocketServer.sendToAll("{\"value\": " + latestValue + "}"); // Send data to WebSocket clients
                     }
 
                     if (topic.equals("clients/clientid")) {
