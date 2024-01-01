@@ -1,11 +1,13 @@
 package tn.cot.healthmonitoring.boundaries;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @ServerEndpoint("/websocket")
+@ApplicationScoped
 public class WebsocketServer {
 
     private static final CopyOnWriteArrayList<Session> sessions = new CopyOnWriteArrayList<>();

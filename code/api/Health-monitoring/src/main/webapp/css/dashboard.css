@@ -1,26 +1,51 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+    background: url('../media/22.jpg') center/cover;
+    color: #fff;
     text-align: center;
     margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-header {
-    margin-bottom: 20px;
-}
-
-#measureContainer,#newMeasuresContainer {
+    height: 100vh;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    flex-direction: column; /* Adjust to column layout */
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+
+.flex-container {
+
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 2; /* Place above overlay */
+}
+
+.full-width-quarter {
+    width: 100vw;
+    height: 20vh;
+    display: flex;
+    flex-direction: column; /* Adjust to column layout */
+    align-items: center;
+    justify-content: flex-start; /* Align content to the top */
+    box-sizing: border-box;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.half {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .measure-section {
-    width: 45%; /* Adjust width based on your design */
-    margin-bottom: 30px;
+    flex: 1;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ddd;
 }
 
 button {
@@ -39,50 +64,22 @@ button:hover {
     transform: scale(1.05);
 }
 
-.staticButton{
-    transition: transform 0.3s ease;
+.double-width {
+    width: 96%; /* Double the width of other buttons */
+    margin-top: 20px; /* Some spacing from above buttons */
 }
-.staticButton:hover{
-    transform: scale(1.4);
-}
-
 
 @media screen and (max-width: 768px) {
-    #measureContainer,#plotContainer,#newMeasuresContainer {
+    .flex-container {
         flex-direction: column;
         align-items: center;
     }
 
-    .measure-section {
+    .half {
+        flex-direction: column;
         width: 100%;
     }
 }
-
-
-.flex-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.measure-section {
-    flex: 1;
-    padding: 10px;
-    margin: 10px;
-    border: 1px solid #ddd;
-}
-.user-options {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    gap: 10px;
-}
-
-.user-button {
-    background-color: #3498db; /* Choose your desired color */
-    color: #ffffff; /* Choose your desired text color */
-    border: none;
-    padding: 10px;
-    cursor: pointer;
+.measure-section h2 {
+    color: #808080; /* Change to your desired gray color */
 }

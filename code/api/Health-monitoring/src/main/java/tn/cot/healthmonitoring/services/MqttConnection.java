@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@ApplicationScoped
+@Singleton
 @Startup
 public class MqttConnection {
     List<Double> mqttDataList = new ArrayList<>();
@@ -89,8 +89,10 @@ public class MqttConnection {
                     if (topic.equals("health")) {
                         System.out.println("health: " + message + " is successfully added");
                         latestValue = Double.parseDouble(new String(message.getPayload()));
+                        System.out.println("latestvalue: " + latestValue + " is successfully added");
                         mqttDataList.add( latestValue );
                         webSocketServer.sendToAll("{\"value\": " + latestValue + "}"); // Send data to WebSocket clients
+                        System.out.println("send websocket");
                     }
 
                     if (topic.equals("clients/clientid")) {
