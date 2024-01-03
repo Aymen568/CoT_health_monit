@@ -14,12 +14,10 @@ import tn.cot.healthmonitoring.repositories.SensorRepository;
 import tn.cot.healthmonitoring.repositories.UserRepository;
 import tn.cot.healthmonitoring.services.MqttConnection;
 
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.Timer;
-import java.util.TimerTask;
 
 @ApplicationScoped
 @Path("sensor")
@@ -131,10 +129,16 @@ public class SensorResources {
             return Response.status(404, "Sensor not found").build();
         }
     }
-
-    private void collectValue(Sensor sensor, Double newValue) {
-        // Add collected data to the sensor
-        sensor.collectValue(newValue);
+    @POST
+    @Path("collect/{sensorId}")
+    public Response collectValue(@PathParam("sensorId") long sensorId, Double newValue) {
+        Sensor sensor = sensorRepository.findById(sensorId).orElse(null);
+        if (sensor != null) {
+            sensor.collectValue(newValue);
+            return Response.ok("newvalue has been added successfully for sensor"+ sensorId).build();
+        } else {
+            return Response.status(404, "Sensor not found").build();
+        }
     }
 
 
@@ -150,5 +154,54 @@ public class SensorResources {
             return Response.status(404, "Sensor not found").build();
         }
     }
+    /**
+     * Get normal and abnormal values for a specific user.
+     *
+     * @param userId The ID of the user
+     * @return Response containing normal and abnormal values
+     */
+    @GET
+    @Path("/values/{sensorId}")
+    public Response getValues(@PathParam("sensorId") String sensorId) {
+        Sensor sensor = sensorRepository.findById(sensorId).orElse(null);
+
+        if (sensor == null) {
+                return Response.status(404, "Sensors not found for the user").build();
+            }
+        long normalValues = sensor.getNormal();
+        long abnormalValues = sensor.getUbnormal();
+
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("Sensor_" + sensor.getId() + "Normal", normalValues);
+        responseMap.put("Sensor_" + sensor.getId() + "Abnormal", abnormalValues);
+
+        return Response.ok(responseMap).build();
+    }
+        /**
+         * Set normal or abnormal values for a specific sensor.
+         *
+         * @param sensorId The ID of the sensor
+         * @param normal   Boolean indicating whether to set normal or abnormal values
+         * @return JSON response indicating success or failure
+         */
+        @PUT
+        @Path("/setvalues/{sensorId}")
+        public Response setValues(@PathParam("sensorId") String sensorId, Boolean normal) {
+            Sensor sensor = sensorRepository.findById(sensorId).orElse(null);
+
+            if (sensor == null) {
+                return Response.status(404, "Sensor not found").build();
+            }
+
+            if (normal) {
+                sensor.setNormal();  // Assuming setNormal method takes no parameters
+            } else {
+                sensor.setUbnormal();  // Assuming setUbnormal method takes no parameters
+            }
+
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("message", "Values set successfully");
+            return Response.ok(responseMap).build();
+        }
 
 }

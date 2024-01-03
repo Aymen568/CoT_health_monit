@@ -5,12 +5,14 @@ import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 import tn.cot.healthmonitoring.utils.FieldPropertyVisibilityStrategy;
+import tn.cot.healthmonitoring.utils.Identity;
+
 import java.util.*;
 import static tn.cot.healthmonitoring.entities.Role.CLIENT;
 
 @Entity("users")
 @JsonbVisibility(FieldPropertyVisibilityStrategy.class)
-public class User {
+public class User implements Identity {
     @Id
     @Column("email")
     private String email;
@@ -28,6 +30,14 @@ public class User {
     @Column
     private List<Sensor> sensors = new ArrayList();
 
+    @Override
+    public Long getRole() {
+        if ("ADMIN".equals(roles)) {
+            return 1L;
+        } else {
+            return 0L;
+        }
+    }
     public User() {
     }
 
@@ -40,7 +50,9 @@ public class User {
         this.roles = Collections.singleton(CLIENT);
     }
 
-
+    public String getName() {
+        return this.fullname; // or whatever makes sense as the principal name for your application
+    }
     public String getFullname() {
         return this.fullname;
     }
@@ -57,13 +69,6 @@ public class User {
         this.email = email;
     }
 
-    public Long getRole() {
-        if ("ADMIN".equals(roles)) {
-            return 1L;
-        } else {
-            return 0L;
-        }
-    }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;

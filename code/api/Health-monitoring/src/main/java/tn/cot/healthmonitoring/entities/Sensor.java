@@ -28,6 +28,11 @@ public class Sensor {
     private String location;
     @Column
     private Boolean state;
+    @Column
+    private long normal;
+    @Column
+    private long ubnormal;
+
 
     // Map to store local measurements
     private Map<LocalDateTime, AbstractMap.SimpleEntry<List<Double>, Integer>> localMeasurements;
@@ -37,6 +42,8 @@ public class Sensor {
         this.localMeasurements = new HashMap<>();
         this.collectedValues = new ArrayList<>();
         state = false;
+        normal=0;
+        ubnormal =0;
     }
 
     public void startMeasurement() {
@@ -54,6 +61,8 @@ public class Sensor {
         this.collectedValues = new ArrayList<>();
         this.localMeasurements = new HashMap<>();
         this.location = location;
+        this.normal = 0;
+        this.ubnormal = 0;
     }
     public long getId() {
         return this.id;
@@ -114,6 +123,20 @@ public class Sensor {
     public void setLocation(String location) {
         this.location = location;
     }
+    public long getNormal() {
+        return this.normal;
+    }
+
+    public void setNormal() {
+        this.normal ++;
+    }
+    public long getUbnormal() {
+        return this.ubnormal;
+    }
+
+    public void setUbnormal() {
+        this.ubnormal++;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -140,4 +163,6 @@ public class Sensor {
                 ", location=" + location +
                 '}';
     }
+
+
 }
