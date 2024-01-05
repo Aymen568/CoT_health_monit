@@ -1,7 +1,5 @@
-# Heart Monitoring CoT system
 
-A brief description of what this project does and who it's for
-
+# <p align="center" style="font-size: 60px;"><strong>Heart Monitoring CoT system</strong> </p>
 
 ## Overview
 
