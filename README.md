@@ -61,6 +61,7 @@ Multiple technologies, plugins, packages and hardware sensors were used while de
 We used A virtual machines from Microsoft Azure Cloud for running the project. (Basically, Azure provides us with a 100$ to use them to try the different Azure products).
 
 We also, have created a deploy.sh file and a cron job that runs every day at midnight to check for changes and update the API. The machine was also set up as an MQTT broker using Mosquitto. 
+
     - Ram: 2 Gib
     - cores: 0.5
     - vCPUs: 2
