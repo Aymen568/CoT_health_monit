@@ -26,6 +26,9 @@ We made sure that the architecture of the repository was well organized for user
     - Move into the frontend directory - make sure that you have flutter installed on your machine - run flutter pub get Then select whether you want to run on your mobile, emulator, or web and run flutter pub run.
 
 ## Architecture
+<div align="center">
+  <img src="docs/media/archi(1).png" alt="architecture" width="300" height="300">
+</div>
 ## Technologies
 Multiple technologies, plugins, packages and hardware sensors were used while developing this project, the technologies are diverse and used for backend and frontend development.
 
@@ -73,4 +76,7 @@ The application's security has been bolstered through the incorporation of the f
 - Implementation of OAuth2 PKCE, utilizing JWT tokens to fortify the authentication and authorization flow.
 - Activation of HTTPS/HSTS to ensure a secure connection between the client and the server.
 
-HTTPS was ensured using Let's Encrypt's Certbot, providing secure communication with the middlewareMiddleware and the MQTT broker. DH (Diffie-Hellman parameters) parameters with 4096 bits are also used for TLS connections. In addition to that, some other security parameters were set on the Node.js server to ensure max security. The grading of the server was tested using SSLlabs, and we had a grade of A+. 
+HTTPS was ensured using Let's Encrypt's Certbot, providing secure communication with the middlewareMiddleware and the MQTT broker. DH (Diffie-Hellman parameters) parameters with 4096 bits are also used for TLS connections. In addition to that, some other security parameters were set on the Node.js server to ensure max security. The grading of the server was tested using SSLlabs, and we had a grade of A.
+<div align="center">
+  <img src="docs/media/cert.png" alt="architecture" width="300" height="300">
+</div>
