@@ -27,7 +27,7 @@ We made sure that the architecture of the repository was well organized for user
 
 ## Architecture
 <div align="center">
-  <img src="/docs/media/archi(1).png" alt="architecture" width="600" height="400">
+  <img src="/docs/media/archi(1).png" alt="architecture" >
 </div>
 ## Technologies
 Multiple technologies, plugins, packages and hardware sensors were used while developing this project, the technologies are diverse and used for backend and frontend development.
