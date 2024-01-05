@@ -75,5 +75,5 @@ The application's security has been bolstered through the incorporation of the f
 
 HTTPS was ensured using Let's Encrypt's Certbot, providing secure communication with the middlewareMiddleware and the MQTT broker. DH (Diffie-Hellman parameters) parameters with 4096 bits are also used for TLS connections. In addition to that, some other security parameters were set on the Node.js server to ensure max security. The grading of the server was tested using SSLlabs, and we had a grade of A.
 <div align="center">
-  <img src="/docs/media/certificate.png" alt="architecture" width="600" height="500">
+  <img src="/docs/media/certificate.png" alt="architecture" height="500">
 </div>
