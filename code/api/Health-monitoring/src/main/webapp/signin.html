@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Monitoring Sign In</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="css/signin.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> <!-- Add jQuery -->
+</head>
+<body>
+
+<div class="login-container">
+    <h2> Sign In</h2>
+    <form id="signInForm" method="post">
+        <label for="username">Email:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="button" id="signInButton">Sign In</button>
+        <button type="button" onclick="window.location.href='./forgetpassword.html'" id="forgetPasswordLink">Forget Password</button>
+    </form>
+</div>
+<div id="particles-js"></div>
+<script>
+    function generateRandomString() {
+        var array = new Uint32Array(28);
+        window.crypto.getRandomValues(array);
+        return Array.from(array, (dec) => ("0" + dec.toString(16)).substr(-2)).join(
+            ""
+        );
+    }
+
+    // Calculate the SHA256 hash of the input text.
+    // Returns a promise that resolves to an ArrayBuffer
+    function sha256(plain) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(plain);
+        return window.crypto.subtle.digest("SHA-256", data);
+    }
+
+    // Base64-urlencodes the input string
+    function base64urlencode(str) {
+        // Convert the ArrayBuffer to string using Uint8 array to conver to what btoa accepts.
+        // btoa accepts chars only within ascii 0-255 and base64 encodes them.
+        // Then convert the base64 encoded to base64url encoded
+        //   (replace + with -, replace / with _, trim trailing =)
+        return btoa(String.fromCharCode.apply(null, new Uint8Array(str)))
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_")
+            .replace(/=+$/, "");
+    }
+
+    // Return the base64-urlencoded sha256 hash for the PKCE challenge
+    async function pkceChallengeFromVerifier(v) {
+        hashed = await sha256(v);
+        return base64urlencode(hashed);
+    }
+    function utf8_to_b64(str) {
+        return window.btoa(unescape(encodeURIComponent(str)));
+    }
+    window.onload = start();
+    async function start() {
+        var state = generateRandomString();
+        var code_verifier = generateRandomString();
+        var code_challenge = await pkceChallengeFromVerifier(code_verifier);
+        console.log(state);
+        console.log(code_verifier);
+        localStorage.setItem("codeverif", code_verifier);
+        console.log(code_challenge);
+        var step = utf8_to_b64(state + "#" + code_challenge);
+        console.log(state + "#" + code_challenge);
+        console.log(step);
+        console.log(
+            utf8_to_b64(
+                "4068d1c7-7945-47f2-9fcb-685cb2bd9bb5#5a7384a0edeaf27a7ff5b2e2960169fc0554530042c74a5205ddf1cb"
+            )
+        );
+        var step2 = "Bearer " + step;
+        $.ajax({
+            url: "http://localhost:8080/api/authorize",
+            type: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Pre-Authorization": step2,
+            },
+            complete: function (data) {
+                console.log("Load was performed.");
+                console.log(data.responseJSON);
+                localStorage.setItem("signInId", data.responseJSON.signInId);
+                document.getElementById("signInButton").onclick = function () {
+                    var signInId = localStorage.getItem("signInId");
+                    var mail = document.getElementById("username").value;
+                    var password = document.getElementById("password").value;
+                    console.log(mail);
+                    let reqObj = { mail: mail, password: password, signInId: signInId };
+                    console.log(JSON.stringify(reqObj));
+                    $.ajax({
+                        url: "http://localhost:8080/api/authenticateadmin/",
+                        type: "POST",
+                        data: JSON.stringify(reqObj),
+                        dataType: "json",
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "application/json",
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            var code_verifier = localStorage.getItem("codeverif");
+                            localStorage.setItem("mail", mail);
+                            var access =
+                                "Bearer " + utf8_to_b64(data.authCode + "#" + code_verifier);
+                            $.ajax({
+                                url: "http://localhost:8080/api/oauth/token",
+                                type: "GET",
+                                headers: {
+                                    Accept: "application/json",
+                                    "Content-Type": "application/json",
+                                    "Post-Authorization": access,
+                                },
+                                success: function (data) {
+                                    console.log(data);
+                                    localStorage.setItem("accesstoken", data.accessToken);
+                                    localStorage.setItem("refreshtoken", data.refreshToken);
+                                    localStorage.removeItem("signInId");
+                                    console.log("ok");
+                                    location.href = "dashboard.html";
+                                },
+                            });
+                        },
+                    });
+                };
+            },
+        });
+    }
+
+</script>
+<script>
+    particlesJS('particles-js', {
+        particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: '#ffffff' },
+            shape: { type: 'circle', stroke: { width: 0, color: '#cc0000' }, polygon: { nb_sides: 5 }, image: { src: 'img/github.svg', width: 100, height: 100 } },
+            opacity: { value: 0.5, random: false, anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false } },
+            size: { value: 3, random: true, anim: { enable: false, speed: 40, size_min: 0.1, sync: false } },
+            line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+            move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } }
+        },
+        interactivity: {
+            detect_on: 'canvas',
+            events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+            modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200 } }
+        },
+        retina_detect: true
+    });
+</script>
+</body>
+</html>

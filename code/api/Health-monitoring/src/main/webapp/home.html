@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCG Measures Dashboard</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/home.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+
+<div id="particles-js"></div>
+
+<header>
+    <h1>Welcome to your BCG Measures Dashboard</h1>
+</header>
+
+<section id="sensorContainer" class="flex-container">
+    <div id="sensorList" class="sensor-section">
+        <h2>Your Sensors</h2>
+        <!-- Container for dynamically added sensor buttons -->
+        <div id="sensorsList"></div>
+    </div>
+
+    <div id="sensorDetails" class="sensor-section">
+        <!-- Sensor details will be dynamically added here -->
+    </div>
+</section>
+
+<section id="actionButtons" class="flex-container">
+    <button id="addSensor">Add Sensor</button>
+    <button id="listSensors">My sensors</button>
+    <button id="dashboard">Dashboard</button>
+</section>
+
+<!-- New buttons for user options in the top right -->
+<div id="userOptions" class="user-options">
+    <button id="logout" class="user-button">Logout</button>
+    <button id="userInfo" class="user-button">User Information</button>
+</div>
+
+<!-- Table container -->
+<div id="sensorTableContainer" style="display: none;">
+    <h2>Sensor List</h2>
+    <table id="sensorTable">
+        <thead>
+        <tr>
+            <th>Sensor ID</th>
+            <th>Location</th>
+        </tr>
+        </thead>
+        <tbody id="sensorTableBody"></tbody>
+    </table>
+</div>
+
+<!-- Add the slider element -->
+<input type="range" id="slider" value="0" min="0" max="100" step="1">
+
+<script src="../js/home.js"></script>
+
+<script>
+    particlesJS('particles-js', {
+        particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: '#ffffff' },
+            shape: { type: 'circle', stroke: { width: 0, color: '#cc0000' }, polygon: { nb_sides: 5 }, image: { src: 'img/github.svg', width: 100, height: 100 } },
+            opacity: { value: 0.5, random: false, anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false } },
+            size: { value: 3, random: true, anim: { enable: false, speed: 40, size_min: 0.1, sync: false } },
+            line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+            move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } }
+        },
+        interactivity: {
+            detect_on: 'canvas',
+            events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+            modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200 } }
+        },
+        retina_detect: true
+    });
+</script>
+
+</body>
+</html>

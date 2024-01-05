@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCG Measures Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="js/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
+    <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+
+</head>
+
+<body>
+
+<div id="firstQuarter" class="full-width-quarter">
+    <header>
+        <h1>Welcome to your BCG Measures Dashboard</h1>
+    </header>
+</div>
+<div id="container" class="flex-container">
+    <!-- New BCG Measures Section -->
+    <section id="newMeasuresContainer" class="flex-container">
+        <div id="newMeasures" class="measure-section">
+            <h2>New BCG Measures</h2>
+            <!-- Sample new measures -->
+            <div class="new-measure">
+                <button id="startNewMeasure">Start New Measure</button>
+                <button id="endNewMeasure">End New Measure</button>
+                <button id="prediction" class="double-width">Prediction</button>
+            </div>
+            <div id="Result"></div>
+        </div>
+    </section>
+
+    <!-- ECG Display Section -->
+    <section id="ecgDisplayContainer" class="flex-container">
+        <div id="ecgWindow" style="border: 2px solid white; background: #fff; padding: 20px;">
+            <!-- Create a canvas element for the chart -->
+            <div id="sliderWrapper" style="margin-bottom: 20px;">
+                <canvas id="ecgChart" width="560" height="250"></canvas>
+            </div>
+            <div>
+                <button id="start">Start</button>
+                <button id="end">Stop</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Historic Visualization Section -->
+    <section id="historicVisualizationContainer" class="flex-container">
+        <div id="historicVisualization" class="historic-section">
+            <!-- Placeholder for historic visualization content -->
+            <div id="oldMeasures" class="measure-section">
+                <h2>Old Measures</h2>
+                <!-- Circle chart for percentages -->
+                <div id="percentageChartContainer">
+                    <canvas id="percentageChart" width="150" height="150"></canvas>
+                    <p id="percentageLabel">Percentage</p>
+                </div>
+                <!-- Add more old measure sections as needed -->
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</body>
+
+</html>

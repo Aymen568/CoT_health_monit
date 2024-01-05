@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an Account</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="css/create-account.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Create an Account</h2>
+    <form action="#" method="post" id="createAccountForm">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+        <label for="mobile">Mobile:</label>
+        <input type="text" id="mobile" name="mobile">
+
+        <label for="emergency">Emergency:</label>
+        <input type="text" id="emergency" name="emergency">
+
+        <button type="submit" id="createAccountBtn">Create Account</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('createAccountForm').onsubmit = function (event) {
+        event.preventDefault();
+
+        const formData = {
+            email: document.getElementById('email').value,
+            fullname: document.getElementById('fullName').value,
+            password: document.getElementById('password').value,
+            mobile: document.getElementById('mobile').value,
+            emergency: document.getElementById('emergency').value
+        };
+
+        // Make a POST request to the server
+        fetch('http://localhost:8080/api/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Server returned status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle successful response
+                alert('Account created successfully.');
+
+                // Redirect to home.html
+                window.location.href = 'signin.html';
+            })
+            .catch(error => {
+                // Handle error
+                console.error('There was a problem with the fetch operation:', error);
+                alert(`Failed to create an account. Error: ${error.message}`);
+            });
+    };
+</script>
+    <div id="particles-js"></div>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle', stroke: { width: 0, color: '#cc0000' }, polygon: { nb_sides: 5 }, image: { src: 'img/github.svg', width: 100, height: 100 } },
+                opacity: { value: 0.5, random: false, anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false } },
+                size: { value: 3, random: true, anim: { enable: false, speed: 40, size_min: 0.1, sync: false } },
+                line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200 } }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>
