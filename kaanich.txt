@@ -1,3 +1,0 @@
-²²²²model representation:
-
-- App/scene/view /  {either Model (MV implicit) , either MWM )
