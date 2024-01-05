@@ -60,9 +60,6 @@ Multiple technologies, plugins, packages and hardware sensors were used while de
 We used A virtual machines from Microsoft Azure Cloud for running the project. (Basically, Azure provides us with a 100$ to use them to try the different Azure products).
 
 We also, have created a deploy.sh file and a cron job that runs every day at midnight to check for changes and update the API. The machine was also set up as an MQTT broker using Mosquitto. 
-We took that approach to increase the security and ensure that everything ran smoothly without an interception. But, it is not necessary to use two separate machines; you can use one VM as an MQTT broker and middlewareMiddleware. The VMs are both e2-small machines (optimized for web hosting and serving (i.e., day to day usage)) and have the following characteristics:
-
-
     - Ram: 2 Gib
     - cores: 0.5
     - vCPUs: 2
