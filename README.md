@@ -20,11 +20,11 @@ We made sure that the architecture of the repository was well organized for user
     - Clone the repo: git clone https://github.com/Aymen568/CoThealthmonit
     - Install Wildfly30
     - Install Nodered on your Raspberry pi and then load the content of flows.json into a new flow. Feel free to change the sensors and actuators pins, the MQTT broker, and the API link for getting a list of installed sensors.
-    - Move into the api directory and run npm install to install the required dependencies. (Please ensure that you have node.js installed in your machine).
-    - Open env.config.js and set your settings (certificate path, MQTT broker settings, and you Mongodb link).
+    - Move into the api directory and run npm install to install the required dependencies. (Please ensure that you have Java 21 installed in your machine).
+    - Open microprofile.config.properties and set your settings (certificate path, MQTT broker settings, and you Mongodb link).
     - Run npm start to start the server locally.
-    - Move into the frontend directory - make sure that you have flutter installed on your machine - run flutter pub get Then select whether you want to run on your mobile, emulator, or web and run flutter pub run.
-
+    - Move into the frontend directory - make sure that you have Wildfly installed on your machine.
+    
 ## Architecture
 <div align="center">
   <img src="/docs/media/archi(1).png" alt="architecture" >
