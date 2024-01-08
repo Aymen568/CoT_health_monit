@@ -61,11 +61,43 @@ public class SensorResources {
             System.out.println("Generated Sensor ID: " + sensorId);
             Sensor sensor = new Sensor(sensorId,userId, location);
             sensorRepository.save(sensor);
+            System.out.println("successfully added sensor");
             return Response.ok(sensor).build();
         } else {
             return Response.status(404, "User not found").build();
         }
     }
+
+    /**
+     * Delete a sensor based on user ID and location
+     * @param userId The user ID
+     * @param location The location of the sensor
+     * @return Response indicating the result of the operation
+     */
+    @DELETE
+    @Path("/delete/{userId}/{location}")
+    public Response deleteSensor(@PathParam("userId") String userId, @PathParam("location") String location) {
+        User user = userRepository.findByEmail(userId).orElse(null);
+
+        if (user != null) {
+            List<Sensor> sensors = sensorRepository.findByUserId(userId);
+            Optional<Sensor> sensorOptional = sensors.stream()
+                    .filter(sensor -> sensor.getLocation().equals(location))
+                    .findFirst();
+            if (sensorOptional.isPresent()) {
+                Sensor sensor = sensorOptional.get();
+                sensorRepository.delete(sensor);
+                return Response.ok("Sensor deleted successfully").build();
+            } else {
+                return Response.status(404, "Sensor not found").build();
+            }
+        } else {
+            return Response.status(404, "User not found").build();
+        }
+    }
+
+
+
     /**
      * @param userId
      * @return the vehicles attached to a user
@@ -73,9 +105,15 @@ public class SensorResources {
     @GET
     //@Secured
     @Path("/{userId}")
-    public Response getByUserId(@PathParam("userId")String userId) {
+    public List<String> getByUserId(@PathParam("userId") String userId) {
         List<Sensor> sensors = sensorRepository.findByUserId(userId);
-        return Response.ok(sensors).build();
+        List<String> locations = new ArrayList<>();
+
+        for (Sensor sensor : sensors) {
+            locations.add(sensor.getLocation());
+        }
+
+        return locations;
     }
 
 
@@ -154,54 +192,5 @@ public class SensorResources {
             return Response.status(404, "Sensor not found").build();
         }
     }
-    /**
-     * Get normal and abnormal values for a specific user.
-     *
-     * @param userId The ID of the user
-     * @return Response containing normal and abnormal values
-     */
-    @GET
-    @Path("/values/{sensorId}")
-    public Response getValues(@PathParam("sensorId") String sensorId) {
-        Sensor sensor = sensorRepository.findById(sensorId).orElse(null);
-
-        if (sensor == null) {
-                return Response.status(404, "Sensors not found for the user").build();
-            }
-        long normalValues = sensor.getNormal();
-        long abnormalValues = sensor.getUbnormal();
-
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("Sensor_" + sensor.getId() + "Normal", normalValues);
-        responseMap.put("Sensor_" + sensor.getId() + "Abnormal", abnormalValues);
-
-        return Response.ok(responseMap).build();
-    }
-        /**
-         * Set normal or abnormal values for a specific sensor.
-         *
-         * @param sensorId The ID of the sensor
-         * @param normal   Boolean indicating whether to set normal or abnormal values
-         * @return JSON response indicating success or failure
-         */
-        @PUT
-        @Path("/setvalues/{sensorId}")
-        public Response setValues(@PathParam("sensorId") String sensorId, Boolean normal) {
-            Sensor sensor = sensorRepository.findById(sensorId).orElse(null);
-
-            if (sensor == null) {
-                return Response.status(404, "Sensor not found").build();
-            }
-
-            if (normal) {
-                sensor.setNormal();  // Assuming setNormal method takes no parameters
-            } else {
-                sensor.setUbnormal();  // Assuming setUbnormal method takes no parameters
-            }
-
-            Map<String, Object> responseMap = new HashMap<>();
-            responseMap.put("message", "Values set successfully");
-            return Response.ok(responseMap).build();
-        }
 
 }

@@ -11,6 +11,7 @@ public interface UserService {
 
     User getUserByEmail(String email);
     void delete(String email) throws UserNotFoundException;
+
     void updatePassword(String email, String newPassword) throws UserNotFoundException;
 
 

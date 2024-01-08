@@ -8,14 +8,18 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import tn.cot.healthmonitoring.entities.Sensor;
 import tn.cot.healthmonitoring.entities.User;
 import tn.cot.healthmonitoring.exceptions.UserAlreadyExistsException;
 import tn.cot.healthmonitoring.exceptions.UserNotFoundException;
 
+import tn.cot.healthmonitoring.repositories.UserRepository;
 import tn.cot.healthmonitoring.services.UserServiceImpl;
 import tn.cot.healthmonitoring.utils.Argon2Utility;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -26,6 +30,8 @@ public class UserResource {
 
     @Inject
     private UserServiceImpl userService ;
+    @Inject
+    private UserRepository userRepository ;
 
 
     /**
@@ -47,25 +53,6 @@ public class UserResource {
             return  Response.status(400, e.getMessage()).build();
         }
     }
-    /**
-     *
-     * @param user
-     * @return Response entity
-     * @throws  UserAlreadyExistsException
-     * @apiNote : used to  create admin account
-     */
-    @POST
-    @Path("/signup")
-    public Response createUser(@Valid User user){
-
-        try {
-            return Response.ok(userService.createUser(user)).build() ;
-        } catch (UserAlreadyExistsException e){
-            System.out.println("user already exsits");
-            return  Response.status(400, e.getMessage()).build();
-        }
-    }
-
     /**
      *
      * @param user
@@ -179,6 +166,56 @@ public class UserResource {
             return Response.status(500, "Internal Server Error").build();
         }
     }
+    /**
+     * Get normal and abnormal values for a specific user.
+     *
+     * @param userId The ID of the user
+     * @return Response containing normal and abnormal values
+     */
+    @GET
+    @Path("/getvalues/{sensorId}")
+    public Response getValues(@PathParam("sensorId") String userId) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null) {
+            return Response.status(404, "User not found").build();
+        }
+        long normalValues = user.getNormal();
+        long abnormalValues = user.getUbnormal();
+
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("Normal", normalValues);
+        responseMap.put( "Abnormal", abnormalValues);
+
+        return Response.ok(responseMap).build();
+    }
+    /**
+     * Set normal or abnormal values for a specific user.
+     *
+     * @param userId The ID of the user
+     * @param normal   Boolean indicating whether to set normal or abnormal values
+     * @return JSON response indicating success or failure
+     */
+    @PUT
+    @Path("/setvalues/{sensorId}")
+    public Response setValues(@PathParam("sensorId") String userId, Boolean normal) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null) {
+            return Response.status(404, "User not found").build();
+        }
+
+        if (normal) {
+            user.setNormal();  // Assuming setNormal method takes no parameters
+        } else {
+            user.setUbnormal();  // Assuming setUbnormal method takes no parameters
+        }
+
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("message", "Values set successfully");
+        return Response.ok(responseMap).build();
+    }
+
 
 
 

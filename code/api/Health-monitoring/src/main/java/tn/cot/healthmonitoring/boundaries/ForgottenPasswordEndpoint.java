@@ -1,5 +1,6 @@
 package tn.cot.healthmonitoring.boundaries;
 
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -7,12 +8,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.*;
 import jakarta.mail.*;
-import jakarta.mail.internet.*;
 import tn.cot.healthmonitoring.entities.User;
 import tn.cot.healthmonitoring.repositories.UserRepository;
+import tn.cot.healthmonitoring.services.EmailService;
 import tn.cot.healthmonitoring.utils.Argon2Utility;
-
-import java.util.Properties;
 
 @ApplicationScoped
 @Path("mail") //Path used when a user forgot his password and wants to change it to a new one
@@ -22,40 +21,26 @@ public class ForgottenPasswordEndpoint {
     private final Map<String, String> verifcodes = new HashMap<>(); // hashmap to store verification codes
     @Inject
     private UserRepository repository; // get user methods to interact with database
+    @EJB
+    private EmailService emailService;
     @GET
     @Path("/{mail}") // the user that wants to change his password sends a get request to get a verification code
-    public void mail(@PathParam("mail") String mail) {
-        final String username = "smart.garbagecot@gmail.com"; //mail of the application
-        final String password = "nvkosscjandibldl"; // password of the application
-
-        Properties props = new Properties(); // configuration for the simple mail transfer protocol
-        props.put("mail.smtp.auth", true);
-        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        props.put("mail.smtp.starttls.enable", true);
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(props,
-                new jakarta.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() { // connect to the application mail
-                        return new PasswordAuthentication(username, password);
-                    }
-                }
-        );
-
+    public Response mail(@PathParam("mail") String to) {
+        Optional<User> userOptional = repository.findById(to);
+        if (! userOptional.isPresent()) {
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+        }
+        String subject= "Changing Password"; // object of the mail
+        String code = UUID.randomUUID().toString(); //generate verification code
+        String message= "Greetings, you have recently demanded to change password. Here is your verification code. Tap it so you can change your password: " + code;
+        String from = "health.monitoring.911service@gmail.com";
         try {
-            Message message = new MimeMessage(session); // create new mail
-            message.setFrom(new InternetAddress(username));
-            message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(mail));
-            message.setSubject("Changing Password"); // object of the mail
-            String code = UUID.randomUUID().toString(); //generate verification code
-            message.setText("Greetings, you have recently demanded to change password. Here is your verification code. Tap it so you can change your password: " + code);
-            Transport.send(message); //send message
-            System.out.println("message sent"); // for debugging
-            verifcodes.put(code, mail); // put the mail and the corresponding verification code in the hashmap
+            emailService.sendEmail(from, to, subject, message);
+            verifcodes.put(code, to);
+            return Response.status(Response.Status.OK).entity("Email sent successfully").build();
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to send email").build();
         }
     }
     @POST

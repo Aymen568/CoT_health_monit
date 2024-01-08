@@ -139,7 +139,7 @@ public class SignInResource {
                         .build();
             } else {
                 return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("{\"message\":\"Authentication failed!\"}")
+                        .entity("{\"message\":\"Wrong Username or Password! Please check again!\"}")
                         .build();
             }
         } catch (EJBException e) {

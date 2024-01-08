@@ -1,13 +1,9 @@
 package tn.cot.healthmonitoring.entities;
 
-import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbVisibility;
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import org.bson.types.ObjectId;
 import tn.cot.healthmonitoring.utils.FieldPropertyVisibilityStrategy;
 
 import java.time.LocalDateTime;
@@ -28,10 +24,7 @@ public class Sensor {
     private String location;
     @Column
     private Boolean state;
-    @Column
-    private long normal;
-    @Column
-    private long ubnormal;
+
 
 
     // Map to store local measurements
@@ -42,8 +35,6 @@ public class Sensor {
         this.localMeasurements = new HashMap<>();
         this.collectedValues = new ArrayList<>();
         state = false;
-        normal=0;
-        ubnormal =0;
     }
 
     public void startMeasurement() {
@@ -61,8 +52,6 @@ public class Sensor {
         this.collectedValues = new ArrayList<>();
         this.localMeasurements = new HashMap<>();
         this.location = location;
-        this.normal = 0;
-        this.ubnormal = 0;
     }
     public long getId() {
         return this.id;
@@ -90,18 +79,6 @@ public class Sensor {
         clearCollectedValues();
     }
 
-    public Integer getLastPrediction() {
-        // Retrieve the last prediction from localMeasurements
-        LocalDateTime lastTimestamp = localMeasurements.keySet().stream().max(LocalDateTime::compareTo).orElse(null);
-        return (lastTimestamp != null) ? localMeasurements.get(lastTimestamp).getValue() : null;
-    }
-
-    public List<Double> getLastData() {
-        // Retrieve the last prediction from localMeasurements
-        LocalDateTime lastTimestamp = localMeasurements.keySet().stream().max(LocalDateTime::compareTo).orElse(null);
-        return (lastTimestamp != null) ? localMeasurements.get(lastTimestamp).getKey() : null;
-    }
-
     public Map<LocalDateTime, AbstractMap.SimpleEntry<List<Double>, Integer>> getLocalMeasurements() {
         return new HashMap<>(localMeasurements); // Return a copy to avoid external modification.
     }
@@ -123,20 +100,7 @@ public class Sensor {
     public void setLocation(String location) {
         this.location = location;
     }
-    public long getNormal() {
-        return this.normal;
-    }
 
-    public void setNormal() {
-        this.normal ++;
-    }
-    public long getUbnormal() {
-        return this.ubnormal;
-    }
-
-    public void setUbnormal() {
-        this.ubnormal++;
-    }
 
     @Override
     public boolean equals(Object o) {

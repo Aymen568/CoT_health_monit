@@ -73,3 +73,22 @@ button:hover {
 .measure-section h2, .historic-section h2 {
     color: #808080; /* Change to your desired gray color */
 }
+#sensorContainer,
+#actionButtons,
+#userOptions,
+#sensorTableContainer {
+    margin-top: 20px; /* Add some spacing between sections */
+}
+
+#actionButtons,
+#userOptions {
+    display: flex;
+    gap: 10px;
+    justify-content: center; /* Center the buttons */
+}
+
+#userOptions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}

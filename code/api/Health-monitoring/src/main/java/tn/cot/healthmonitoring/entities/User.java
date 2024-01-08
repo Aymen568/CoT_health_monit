@@ -29,6 +29,10 @@ public class User implements Identity {
     private String emergency;
     @Column
     private List<Sensor> sensors = new ArrayList();
+    @Column
+    private long normal;
+    @Column
+    private long ubnormal;
 
     @Override
     public Long getRole() {
@@ -48,6 +52,8 @@ public class User implements Identity {
         this.mobile = mobile;
         this.emergency = emergency;
         this.roles = Collections.singleton(CLIENT);
+        this.normal= 0;
+        this.ubnormal=0;
     }
 
     public String getName() {
@@ -80,6 +86,20 @@ public class User implements Identity {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+    public long getNormal() {
+        return this.normal;
+    }
+
+    public void setNormal() {
+        this.normal ++;
+    }
+    public long getUbnormal() {
+        return this.ubnormal;
+    }
+
+    public void setUbnormal() {
+        this.ubnormal++;
     }
 
     public int hashCode() {
@@ -133,7 +153,7 @@ public class User implements Identity {
     }
 
     public String toString() {
-        StringBuilder result = new StringBuilder("FullName=" + this.fullname  + ", email=" + this.email + ", password=" + this.password + ", mobile=" + this.mobile + ", emergency=" + this.emergency + "\nSensors: ");
+        StringBuilder result = new StringBuilder("FullName=" + this.fullname  + ", email=" + this.email + ", password=" + this.password + ", mobile=" + this.mobile + ", emergency=" + this.emergency + ", nb_normal="  + this.normal + ", nb_ubnormal"+this.ubnormal+", \nSensors: ");
         Iterator var2 = this.sensors.iterator();
 
         while(var2.hasNext()) {
