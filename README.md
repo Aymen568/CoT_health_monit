@@ -18,17 +18,17 @@ As for now, you can test the application directly from your browser at https://l
 We made sure that the architecture of the repository was well organized for users to test the project locally or build on it. If you want to run the application locally, please follow the following steps:
 
     - Clone the repo: git clone https://github.com/Aymen568/CoThealthmonit
-    - Install Wildfly30
-    - Install Nodered on your Raspberry pi and then load the content of flows.json into a new flow. Feel free to change the sensors and actuators pins, the MQTT broker, and the API link for getting a list of installed sensors.
-    - Move into the api directory and run npm install to install the required dependencies. (Please ensure that you have node.js installed in your machine).
-    - Open env.config.js and set your settings (certificate path, MQTT broker settings, and you Mongodb link).
+    - Install Wildfly30, with Java 21.
+    - Install Nodered on your Raspberry pi and then load the content of embedded folder into your raspberry pi. Feel free to change the sensors and actuators pins, the MQTT broker, and the API link for getting a list of installed sensors.
+    - Move into the api directory and run npm install to install the required dependencies.
+    - Open microprofile.config.properties and set your settings (certificate path, MQTT broker settings, and you Mongodb link).
     - Run npm start to start the server locally.
-    - Move into the frontend directory - make sure that you have flutter installed on your machine - run flutter pub get Then select whether you want to run on your mobile, emulator, or web and run flutter pub run.
-
+    
 ## Architecture
 <div align="center">
-  <img src="/docs/media/archi(1).png" alt="architecture" width="300" height="300">
+  <img src="/docs/media/archi(1).png" alt="architecture" >
 </div>
+
 ## Technologies
 Multiple technologies, plugins, packages and hardware sensors were used while developing this project, the technologies are diverse and used for backend and frontend development.
 
@@ -60,8 +60,6 @@ Multiple technologies, plugins, packages and hardware sensors were used while de
 We used A virtual machines from Microsoft Azure Cloud for running the project. (Basically, Azure provides us with a 100$ to use them to try the different Azure products).
 
 We also, have created a deploy.sh file and a cron job that runs every day at midnight to check for changes and update the API. The machine was also set up as an MQTT broker using Mosquitto. 
-We took that approach to increase the security and ensure that everything ran smoothly without an interception. But, it is not necessary to use two separate machines; you can use one VM as an MQTT broker and middlewareMiddleware. The VMs are both e2-small machines (optimized for web hosting and serving (i.e., day to day usage)) and have the following characteristics:
-
 
     - Ram: 2 Gib
     - cores: 0.5
@@ -78,5 +76,5 @@ The application's security has been bolstered through the incorporation of the f
 
 HTTPS was ensured using Let's Encrypt's Certbot, providing secure communication with the middlewareMiddleware and the MQTT broker. DH (Diffie-Hellman parameters) parameters with 4096 bits are also used for TLS connections. In addition to that, some other security parameters were set on the Node.js server to ensure max security. The grading of the server was tested using SSLlabs, and we had a grade of A.
 <div align="center">
-  <img src="/docs/media/cert.png" alt="architecture" width="300" height="300">
+  <img src="/docs/media/certificate.png" alt="architecture" height="500">
 </div>
