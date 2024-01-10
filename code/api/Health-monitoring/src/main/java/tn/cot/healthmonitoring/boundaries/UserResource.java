@@ -173,8 +173,8 @@ public class UserResource {
      * @return Response containing normal and abnormal values
      */
     @GET
-    @Path("/getvalues/{sensorId}")
-    public Response getValues(@PathParam("sensorId") String userId) {
+    @Path("/getvalues/{userId}")
+    public Response getValues(@PathParam("userId") String userId) {
         User user = userRepository.findById(userId).orElse(null);
 
         if (user == null) {

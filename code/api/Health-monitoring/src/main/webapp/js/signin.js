@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var step2 = "Bearer " + step;
 
         $.ajax({
-            url: "http://localhost:8080/api/authorize",
+            url: "https://labidiaymen.me/api/authorize",
             type: "POST",
             headers: {
                 Accept: "application/json",
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         // Simulating authentication request (Replace with actual API endpoint)
                         $.ajax({
-                            url: "http://localhost:8080/api/authenticate/",
+                            url: "https://labidiaymen.me/api/authenticate/",
                             type: "POST",
                             data: JSON.stringify(reqObj),
                             dataType: "json",
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                                 // Simulating token request (Replace with actual API endpoint)
                                 $.ajax({
-                                    url: "http://localhost:8080/api/oauth/token",
+                                    url: "https://labidiaymen.me/api/oauth/token",
                                     type: "GET",
                                     headers: {
                                         Accept: "application/json",
@@ -129,7 +129,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     alert("Authentication failure. Please check your credentials and try again.");
                     // Handle error cases if needed
-
                     // Clear the form fields
                     document.getElementById("username").value = "";
                     document.getElementById("password").value = "";

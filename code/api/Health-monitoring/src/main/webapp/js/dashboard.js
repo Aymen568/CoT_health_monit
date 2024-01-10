@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Fetch user information from the API endpoint
-        fetch(`http://localhost:8080/api/${userEmail}`, {
+        fetch(`https://labidiaymen.me/api/${userEmail}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${userToken}`, // Send the user token for authentication
@@ -130,25 +130,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function fetchDataAndCreateChart(userId) {
         try {
-            const response = await fetch(`http://localhost:8080/api/getvalues/${userId}`, { method: 'GET'
-            });
+            const response = await fetch(`https://labidiaymen.me/api/getvalues/${userId}`, { method: 'GET' });
 
             if (!response.ok) {
                 throw new Error(`Failed to fetch data. Status: ${response.status}`);
             }
 
             const data = await response.json();
-            const normalValues = (data[`Normal`] != 0) ? data[`Normal`]: 100;
-            const abnormalValues = data[`Abnormal`];
+            const normalValues = data['Normal'] !== undefined ? data['Normal'] : 100;
+            const abnormalValues = data['Abnormal'];
 
-            // Calculate percentages and create percentage chart
+            console.log(`Normal Values: ${normalValues}`);
+            console.log(`Abnormal Values: ${abnormalValues}`);
+
+            // Calculate percentages and update the chart
             const totalValues = normalValues + abnormalValues;
             const normalPercentage = (normalValues / totalValues) * 100;
             const abnormalPercentage = (abnormalValues / totalValues) * 100;
             ecgStat.data.datasets[0].data[0] = normalPercentage;
             ecgStat.data.datasets[0].data[1] = abnormalPercentage;
             ecgStat.update();
-            console.log("new percentages  are :", ecgStat.data.datasets[0].data);
+
+            console.log("New percentages are:", ecgStat.data.datasets[0].data);
 
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -157,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to start measurement for a sensor
     async function startMeasurement(sensorId) {
         try {
-            const response = await fetch(`http://localhost:8080/api/sensor/start/${sensorId}`, {
+            const response = await fetch(`https://labidiaymen.me/api/sensor/start/${sensorId}`, {
                 method: 'POST',
             });
 
@@ -215,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         updatePercentage(normalVal, ubnormalVal);
         $.ajax({
-            url: `http://localhost:8080/api/setvalues/${sensorId}`,
+            url: `https://labidiaymen.me/api/setvalues/${userId}`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({ normal: result }),
@@ -252,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
-            const emailResponse = await fetch("http://localhost:8080/api/email/send", {
+            const emailResponse = await fetch("https://labidiaymen.me/api/email/send", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -326,53 +329,58 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event listener for the "Predict" button
     document.getElementById("prediction").addEventListener("click", function () {
-        const dataList = Array(187).fill(0);
-        const dataJson = JSON.stringify({ input_data: dataList });
+        dataList = Array(187).fill(0);
+        if (dataList.length < 187) {
+            alert("Not enough measure for prediction");
+        } else {
+            dataList = dataList.slice(dataList.length - 187);
+            const dataJson = JSON.stringify({input_data: dataList});
 
-        fetch(apiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            body: dataJson,
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
+            fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: dataJson,
             })
-            .then(async predictionResult => {
-                console.log('Prediction result:', predictionResult);
-
-                if (predictionResult.hasOwnProperty('prediction')) {
-                    const result = predictionResult.prediction[0][0] > 0.5 ? "NORMAL" : "ABNORMAL";
-                    console.log('Prediction:', result);
-
-                    const predictionResultElement = document.getElementById("Result");
-                    predictionResultElement.innerText = `Prediction: ${result}`;
-                    updateChartBasedOnPrediction(result);
-
-                    let content = "The user " + Username + " having the phone number " + Phone;
-
-                    if (result === "NORMAL") {
-                        content += " has taken a safe measure today";
-                    } else {
-                        content += " has an abnormal measure and needs further treatment!";
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
                     }
+                    return response.json();
+                })
+                .then(async predictionResult => {
+                    console.log('Prediction result:', predictionResult);
 
-                    sendEmail(from, Emergency, subject, content);
+                    if (predictionResult.hasOwnProperty('prediction')) {
+                        const result = predictionResult.prediction[0][0] > 0.5 ? "NORMAL" : "ABNORMAL";
+                        console.log('Prediction:', result);
 
-                    // Clear the data list after sending the prediction request
-                    dataList.length = 0;
-                } else {
-                    console.error('Prediction result does not have the expected structure.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                        const predictionResultElement = document.getElementById("Result");
+                        predictionResultElement.innerText = `Prediction: ${result}`;
+                        updateChartBasedOnPrediction(result);
+
+                        let content = "The user " + Username + " having the phone number " + Phone;
+
+                        if (result === "NORMAL") {
+                            content += " has taken a safe measure today";
+                        } else {
+                            content += " has an abnormal measure and needs further treatment!";
+                        }
+
+                        sendEmail(from, Emergency, subject, content);
+
+                        // Clear the data list after sending the prediction request
+                        dataList.length = 0;
+                    } else {
+                        console.error('Prediction result does not have the expected structure.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
     });
     document.getElementById('logout').addEventListener("click", function () {
         logout();
@@ -382,6 +390,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Attach the logout function to a logout button or link
     document.getElementById("userInfo").addEventListener("click", function () {
         DisplayUserInfo();
+    });
+    document.getElementById('mysensors').addEventListener('click', function () {
+        window.location.href = 'home.html'; // Replace 'sensorpage.html' with the actual URL of your sensor page
     });
     // Flag to track whether the measurement has started
     let isMeasurementStarted = false;

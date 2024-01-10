@@ -4,8 +4,6 @@ package tn.cot.healthmonitoring.boundaries;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
 import tn.cot.healthmonitoring.services.MqttConnection;
-
-
 import java.util.Hashtable;
 
 @ServerEndpoint("/mqtt")

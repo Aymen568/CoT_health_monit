@@ -8,7 +8,7 @@ import jakarta.ws.rs.core.*;
 import com.nimbusds.jose.*;
 import org.json.*;
 import tn.cot.healthmonitoring.controllers.UserManager;
-import tn.cot.healthmonitoring.entities.User;
+
 import tn.cot.healthmonitoring.utils.OAuth2PKCE;
 import tn.cot.healthmonitoring.utils.Identity;
 

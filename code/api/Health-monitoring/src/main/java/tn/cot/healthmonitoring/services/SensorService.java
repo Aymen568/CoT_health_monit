@@ -2,7 +2,6 @@ package tn.cot.healthmonitoring.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import tn.cot.healthmonitoring.exceptions.UserAlreadyExistsException;
 import tn.cot.healthmonitoring.entities.Sensor;
 import tn.cot.healthmonitoring.repositories.SensorRepository;
 

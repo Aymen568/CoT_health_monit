@@ -3,7 +3,6 @@ package tn.cot.healthmonitoring.services;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
@@ -12,10 +11,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import tn.cot.healthmonitoring.boundaries.WebsocketServer;
 import tn.cot.healthmonitoring.repositories.SensorRepository;
 import tn.cot.healthmonitoring.repositories.UserRepository;
-
-import javax.net.ssl.SSLSocketFactory;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Singleton

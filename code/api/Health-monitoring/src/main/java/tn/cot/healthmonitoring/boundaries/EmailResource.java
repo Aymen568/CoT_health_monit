@@ -13,15 +13,12 @@ import tn.cot.healthmonitoring.services.EmailService;
 
 @Path("/email")
 public class EmailResource {
-
     @EJB
     private EmailService emailService;
-
     @POST
     @Path("/send")
     @Consumes("application/json")
     public Response sendEmail(EmailDTO emailDTO, @Context HttpServletRequest request) {
-
         try {
             emailService.sendEmail(emailDTO.getTo(), emailDTO.getTo(), emailDTO.getSubject(), emailDTO.getContent());
             return Response.status(Response.Status.OK).entity("Email sent successfully").build();
