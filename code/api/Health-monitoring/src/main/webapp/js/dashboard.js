@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Fetch user information from the API endpoint
-        fetch(`http://localhost:8080/api/${userEmail}`, {
+        fetch(`https://labidiaymen.me/api/${userEmail}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${userToken}`, // Send the user token for authentication
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function fetchDataAndCreateChart(userId) {
         try {
-            const response = await fetch(`http://localhost:8080/api/getvalues/${userId}`, { method: 'GET' });
+            const response = await fetch(`https://labidiaymen.me/api/getvalues/${userId}`, { method: 'GET' });
 
             if (!response.ok) {
                 throw new Error(`Failed to fetch data. Status: ${response.status}`);
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         updatePercentage(normalVal, ubnormalVal);
         $.ajax({
-            url: `http://localhost:8080/api/setvalues/${userId}`,
+            url: `https://labidiaymen.me/api/setvalues/${userId}`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({ normal: result }),
@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
-            const emailResponse = await fetch("http://localhost:8080/api/email/send", {
+            const emailResponse = await fetch("https://labidiaymen.me/api/email/send", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
