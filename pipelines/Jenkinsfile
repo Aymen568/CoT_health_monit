@@ -6,7 +6,7 @@ pipeline {
         GITHUB_CREDENTIALS = credentials('githubtoken')
         WILDFLY_HOME = '/opt/wildfly'
         M3_HOME = '/opt/apache-maven-3.8.8'
-        PROJECT_DIR = 'code/api/Health-monitoring'  // Update to your actual project directory
+        PROJECT_DIR = 'code/api/Health-monitoring'
         SONAR_INSTALLATION = 'sonarcube1'
     }
     
@@ -20,11 +20,17 @@ pipeline {
             }
         }
 
-       
-        stage('Deploy to WildFly') {
+        stage('Checkout Code') {
             steps {
-                dir(PROJECT_DIR) {
-                    script {
+                checkout([$class: 'GitSCM', branches: [[name: '*/dev']], userRemoteConfigs: [[url: "${GITHUB_REPO_URL}", credentialsId: "${GITHUB_CREDENTIALS}"]]])
+            }
+        }
+       
+        stage('Build and Deploy to WildFly') {
+            steps {
+                script {
+                    dir(PROJECT_DIR) {
+                        sh "${M3_HOME}/bin/mvn clean package"
                         sh "${WILDFLY_HOME}/bin/jboss-cli.sh --connect -u=admin -p=admin --command=deploy target/Health-monitoring-1.0-SNAPSHOT.war"
                     }
                 }
