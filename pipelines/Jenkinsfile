@@ -1,43 +1,18 @@
 pipeline {
-    agent any 
+    agent any
 
     environment {
         GITHUB_REPO_URL = 'https://github.com/Aymen568/CoT_health_monit.git'
         GITHUB_CREDENTIALS = credentials('githubtoken')
-        WILDFLY_HOME = '/opt/wildfly'
-        M3_HOME = '/opt/apache-maven-3.8.8'
-        PROJECT_DIR = 'code/api/Health-monitoring'
-        COPT_PROJECT_DIR = '/opt/COT_project' // New directory
-
-    }
-    
-    triggers {
-        githubPush()
     }
 
     stages {
-        stage('Initialization') {
-            steps {
-                echo "GITHUB_REPO_URL: ${GITHUB_REPO_URL}"
-                echo "WILDFLY_HOME: ${WILDFLY_HOME}"
-                echo "PROJECT_DIR: ${PROJECT_DIR}"
-                echo "M3_HOME: ${M3_HOME}"
-            }
-        }
-
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
-
         stage('Checkout Code') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/dev']], userRemoteConfigs: [[url: "${GITHUB_REPO_URL}", credentialsId: "${GITHUB_CREDENTIALS}"]]])
-                // Ensure that we have the latest code by pulling changes
-                sh "git pull origin dev"
+                script {
+                    checkout([$class: 'GitSCM', branches: [[name: '*/dev']], userRemoteConfigs: [[url: "${GITHUB_REPO_URL}", credentialsId: "${GITHUB_CREDENTIALS}"]]])
+                }
             }
         }
-
     }
 }
