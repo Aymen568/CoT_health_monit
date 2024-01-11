@@ -9,6 +9,10 @@ pipeline {
         SONAR_INSTALLATION = 'sonarcube1'
     }
     
+    triggers {
+        githubPush()
+    }
+
     stages {
         stage('Initialization') {
             steps {
@@ -19,23 +23,20 @@ pipeline {
             }
         }
 
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
         stage('Checkout Code') {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/dev']], userRemoteConfigs: [[url: "${GITHUB_REPO_URL}", credentialsId: "${GITHUB_CREDENTIALS}"]]])
+                // Ensure that we have the latest code by pulling changes
+                sh "git pull origin dev"
             }
         }
        
-        stage('Build and Deploy to WildFly') {
-            steps {
-                script {
-                    dir(PROJECT_DIR) {
-                        sh "${M3_HOME}/bin/mvn clean package"
-
-                        // Adjust the deploy command
-                        sh "${WILDFLY_HOME}/bin/jboss-cli.sh --connect --command=\"deploy target/Health-monitoring-1.0-SNAPSHOT.war\""
-                    }
-                }
-            }
-        }
+        
     }
 }
