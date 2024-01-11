@@ -31,7 +31,9 @@ pipeline {
                 script {
                     dir(PROJECT_DIR) {
                         sh "${M3_HOME}/bin/mvn clean package"
-                        sh "${WILDFLY_HOME}/bin/jboss-cli.sh --connect -u=admin -p=admin --command=deploy target/Health-monitoring-1.0-SNAPSHOT.war"
+
+                        // Adjust the deploy command
+                        sh "${WILDFLY_HOME}/bin/jboss-cli.sh --connect --command=\"deploy target/Health-monitoring-1.0-SNAPSHOT.war\""
                     }
                 }
             }
