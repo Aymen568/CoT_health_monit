@@ -25,7 +25,7 @@ pipeline {
             steps {
                 dir(PROJECT_DIR) {
                     script {
-                        sh "${WILDFLY_HOME}/bin/jboss-cli.sh --connect -u=admin -p=admin --command=deploy --force target/Health-monitoring-1.0-SNAPSHOT.war"
+                        sh "${WILDFLY_HOME}/bin/jboss-cli.sh --connect -u=admin -p=admin --command=deploy target/Health-monitoring-1.0-SNAPSHOT.war"
                     }
                 }
             }
