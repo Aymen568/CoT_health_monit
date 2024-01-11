@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     async function addSensor(userId, sensorLocation) {
         try {
-            const response = await fetch(`https://labidiaymen.me/api/sensor/${userId}/${sensorLocation}`, {
+            const response = await fetch(`https://localhost:8080/api/sensor/${userId}/${sensorLocation}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.info(location);
 
         try {
-            const response = await fetch(`https://labidiaymen.me/api/sensor/delete/${userId}/${location}`, {
+            const response = await fetch(`http://localhost:8080/api/sensor/delete/${userId}/${location}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function fetchSensorLocationsAndAddMarkers(userId) {
         try {
-            const response = await fetch(`https://labidiaymen.me/api/sensor/${userId}`, {
+            const response = await fetch(`http://localhost:8080/api/sensor/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const response = await fetch(`https://labidiaymen.me/api/sensor/${userEmail}`, {
+            const response = await fetch(`http://localhost:8080/api/sensor/${userEmail}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${userToken}`,

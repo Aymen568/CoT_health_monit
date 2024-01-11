@@ -161,6 +161,7 @@ public class SensorResources {
         Sensor sensor = sensorRepository.findById(sensorId).orElse(null);
 
         if (sensor != null) {
+
             sensor.startMeasurement();
             return Response.ok("Measurement started for sensor: " + sensorId).build();
         } else {

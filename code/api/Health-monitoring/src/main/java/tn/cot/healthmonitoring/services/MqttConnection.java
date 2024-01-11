@@ -11,6 +11,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import tn.cot.healthmonitoring.boundaries.WebsocketServer;
 import tn.cot.healthmonitoring.repositories.SensorRepository;
 import tn.cot.healthmonitoring.repositories.UserRepository;
+
+import javax.net.ssl.SSLSocketFactory;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,13 +52,12 @@ public class MqttConnection {
             System.out.println("----------------------------------------------");
             System.out.println(client.getClientId());
             System.out.println("----------------------------------------------");
-
             MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
-            //mqttConnectOptions.setUserName(username);
-            //mqttConnectOptions.setPassword(password.toCharArray());
+            mqttConnectOptions.setUserName(username);
+            mqttConnectOptions.setPassword(password.toCharArray());
             //mqttConnectOptions.setSocketFactory(SSLSocketFactory.getDefault());
-            mqttConnectOptions.setKeepAliveInterval(120);
-            mqttConnectOptions.setConnectionTimeout(120);
+            //mqttConnectOptions.setKeepAliveInterval(120);
+            //mqttConnectOptions.setConnectionTimeout(120);
             mqttConnectOptions.setAutomaticReconnect(true);
             client.connect(mqttConnectOptions);
 

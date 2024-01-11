@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const websocketPort = "8080";
     const websocketUrl = `ws://${websocketHost}:${websocketPort}/websocket`;
     const apiUrl = "http://127.0.0.1:5000/predict";
+    const mqtturl ='http://192.168.1.104:1880/start'
     let normalVal =0;
     let ubnormalVal = 0;
     let dataList = [];
@@ -87,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Fetch user information from the API endpoint
-        fetch(`https://labidiaymen.me/api/${userEmail}`, {
+        fetch(`http://localhost:8080/api/${userEmail}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${userToken}`, // Send the user token for authentication
@@ -130,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function fetchDataAndCreateChart(userId) {
         try {
-            const response = await fetch(`https://labidiaymen.me/api/getvalues/${userId}`, { method: 'GET' });
+            const response = await fetch(`http://localhost:8080/api/getvalues/${userId}`, { method: 'GET' });
 
             if (!response.ok) {
                 throw new Error(`Failed to fetch data. Status: ${response.status}`);
@@ -158,31 +159,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     // Function to start measurement for a sensor
-    async function startMeasurement(sensorId) {
-        try {
-            const response = await fetch(`https://labidiaymen.me/api/sensor/start/${sensorId}`, {
-                method: 'POST',
-            });
+    async function startMeasurement() {
 
-            if (response.ok) {
-                const result = await response.text();
-                console.log(result);
-
-                // Set the flag to indicate that the measurement has started
                 isMeasurementStarted = true;
-                ecgChart.data.labels=[];
-                ecgChart.data.datasets[0].data=[];
+                ecgChart.data.labels = [];
+                ecgChart.data.datasets[0].data = [];
                 ecgChart.update();
-            } else if (response.status === 404) {
-                console.error('Sensor not found');
-            } else {
-                console.error(`Failed to start measurement. Status: ${response.status}`);
-            }
-        } catch (error) {
-            console.error('Error:', error.message);
-        }
-    }
 
+                // Trigger the exec node in Node-RED
+                const mqtturl = 'http://192.168.1.104:1880/start';  // Replace with the actual URL
+
+                await fetch(mqtturl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+
+                });
+
+    }
     // Update the ECG chart
     function updateChart(value) {
         console.log("Updating chart with value:", value);
@@ -218,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         updatePercentage(normalVal, ubnormalVal);
         $.ajax({
-            url: `https://labidiaymen.me/api/setvalues/${userId}`,
+            url: `http://localhost:8080/api/setvalues/${userId}`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({ normal: result }),
@@ -255,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
-            const emailResponse = await fetch("https://labidiaymen.me/api/email/send", {
+            const emailResponse = await fetch("http://localhost:8080/api/email/send", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -289,12 +285,9 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchUserInfo();
     fetchDataAndCreateChart(1)
     document.getElementById("startNewMeasure").addEventListener("click", function () {
-        // Replace 'your-sensor-id' with the actual sensor ID
-        const sensorId = 1;
-        console.log(sensorId);
 
-        // Call the startMeasurement function with the sensor ID
-        startMeasurement(sensorId);
+        // Call the startMeasurement function with the
+        startMeasurement();
         console.log("start measuring");
         ecgChart.data.labels=[]
         ecgChart.data.datasets[0].data=[]
