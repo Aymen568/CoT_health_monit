@@ -42,7 +42,7 @@ pipeline {
         stage('Copy to /opt/COT_project') {
             steps {
                 script {
-                    sh "sudo cp -r ${PROJECT_DIR} ${COPT_PROJECT_DIR}"
+                    sh "echo 'SupCom@2021?' | sudo -S cp -r ${PROJECT_DIR} ${COPT_PROJECT_DIR}"
                 }
             }
         }
