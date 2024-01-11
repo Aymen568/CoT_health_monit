@@ -39,12 +39,5 @@ pipeline {
             }
         }
 
-        stage('Copy to /opt/COT_project') {
-            steps {
-                script {
-                    sh "echo -n 'admin' | sudo -S cp -r ${PROJECT_DIR} ${COPT_PROJECT_DIR}"
-                }
-            }
-        }
     }
 }
