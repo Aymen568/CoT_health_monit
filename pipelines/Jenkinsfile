@@ -1,12 +1,14 @@
 pipeline {
     agent any 
+
     environment {
         GITHUB_REPO_URL = 'https://github.com/Aymen568/CoT_health_monit.git'
         GITHUB_CREDENTIALS = credentials('githubtoken')
         WILDFLY_HOME = '/opt/wildfly'
         M3_HOME = '/opt/apache-maven-3.8.8'
         PROJECT_DIR = 'code/api/Health-monitoring'
-        SONAR_INSTALLATION = 'sonarcube1'
+        COPT_PROJECT_DIR = '/opt/COT_project' // New directory
+
     }
     
     triggers {
@@ -36,7 +38,13 @@ pipeline {
                 sh "git pull origin dev"
             }
         }
-       
-        
+
+        stage('Copy to /opt/COT_project') {
+            steps {
+                script {
+                    sh "cp -r ${PROJECT_DIR} ${COPT_PROJECT_DIR}"
+                }
+            }
+        }
     }
 }
