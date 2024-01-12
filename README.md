@@ -53,6 +53,7 @@ Multiple technologies, plugins, packages and hardware sensors were used while de
 
     Server
         - Mosquitto Broker
+        
     Hardware
         - Raspberry Pi 4
         - Arduino
@@ -70,7 +71,7 @@ On the client side, detailed information about both the front-end and back-end i
 
 ## Deployment Server
 
-We used A virtual machines from Microsoft Azure Cloud for running the project. (Basically, Azure provides us with a 100$ to use them to try the different Azure products).
+We used a virtual machines from Microsoft Azure Cloud for running the project. (Basically, Azure provides us with a 100$ to use them to try the different Azure products).
 
 We also, have created a deploy.sh file and a cron job that runs every day at midnight to check for changes and update the API. The machine was also set up as an MQTT broker using Mosquitto. 
 
@@ -87,7 +88,7 @@ The application's security has been bolstered through the incorporation of the f
 - Implementation of OAuth2 PKCE, utilizing JWT tokens to fortify the authentication and authorization flow.
 - Activation of HTTPS/HSTS to ensure a secure connection between the client and the server.
 
-HTTPS was ensured using Let's Encrypt's Certbot, providing secure communication with the middlewareMiddleware and the MQTT broker. DH (Diffie-Hellman parameters) parameters with 4096 bits are also used for TLS connections. In addition to that, some other security parameters were set on the Node.js server to ensure max security. The grading of the server was tested using SSLlabs, and we had a grade of A.
+HTTPS was ensured using Let's Encrypt's Certbot, providing secure communication with the middlewareMiddleware and the MQTT broker. DH (Diffie-Hellman parameters) parameters with 4096 bits are also used for TLS connections. The grading of the server was tested using SSLlabs, and we had a grade of A.
 <div align="center">
   <img src="/docs/media/certificate.png" alt="architecture" height="500">
 </div>
