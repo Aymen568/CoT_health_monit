@@ -1,11 +1,9 @@
 pipeline {
     agent any
-
     environment {
         GITHUB_REPO_URL = 'https://github.com/Aymen568/CoT_health_monit.git'
         GITHUB_CREDENTIALS = credentials('githubtoken')
     }
-
     stages {
         stage('Checkout Code') {
             steps {
