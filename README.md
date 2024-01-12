@@ -101,8 +101,8 @@ Below, you will find the website architecture, as well as the materials hierarch
     <img src="/docs/media/front1.png" alt="architecture" height="200">
   </div>
   <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-    <img src="/docs/media/front3.png" alt="signin" height="220">
-    <img src="/docs/media/Screenshot 2024-01-12 141551.png" alt="signin" height="220">
+    <img src="/docs/media/front3.png" alt="signin" height="210">
+    <img src="/docs/media/Screenshot 2024-01-12 141551.png" alt="signin" height="210">
   </div>
 </div>
 
