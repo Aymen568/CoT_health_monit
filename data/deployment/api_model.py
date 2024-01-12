@@ -4,7 +4,7 @@ import tensorflow as tf
 import numpy as np
 
 app = Flask(__name__)
-CORS(app, resources={r"/predict": {"origins": ["https://labidiaymen.me", "http://localhost:8080"]}})
+CORS(app)
 # Load the saved model
 model = tf.keras.models.load_model('model.h5')
 
