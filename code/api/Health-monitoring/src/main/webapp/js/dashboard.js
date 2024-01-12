@@ -343,6 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         const predictionResultElement = document.getElementById("Result");
                         predictionResultElement.innerText = `Prediction: ${result}`;
+
                         // Apply styles based on the result
                         if (result === "NORMAL") {
                             // Green for NORMAL
