@@ -6,9 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // Redirect to the sign-in page if not signed in
             window.location.href = 'welcome.html';
         }*/
-    const websocketHost = "localhost";
-    const websocketPort = "8080";
-    const websocketUrl = `ws://${websocketHost}:${websocketPort}/websocket`;
+    const websocketHost = "labidiaymen.me";
+    const websocketPort = "8443";
+    const websocketUrl = `ws://${websocketHost}/websocket`;
+    //const websocketUrl = `ws://${websocketHost}:${websocketPort}/websocket`;
     const apiUrl = "http://127.0.0.1:5000/predict";
     const mqtturl ='http://192.168.1.102:1880/start'
     let normalVal =0;
