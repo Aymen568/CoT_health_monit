@@ -114,3 +114,29 @@ button:hover {
     background-color: rgba(200, 200, 200, 0.8); /* Set a subtle gray background for header cells */
     color: #333; /* Set text color for header cells */
 }
+@media screen and (max-width: 768px) {
+    body {
+        height: auto;
+    }
+
+    #sensorTableContainer {
+        width: 100%;
+    }
+
+    #sensorTable {
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #333;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        border-collapse: collapse;
+    }
+
+    #sensorTable th,
+    #sensorTable td {
+        border: 1px solid #ddd;
+    }
+
+    #sensorTable th {
+        background-color: rgba(200, 200, 200, 0.8);
+        color: #333;
+    }
+}
