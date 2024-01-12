@@ -97,8 +97,8 @@ HTTPS was ensured using Let's Encrypt's Certbot, providing secure communication 
 Below, you will find the website architecture, as well as the materials hierarchy used for testing the system that we have established during this project.
 <div align="center">
   <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-    <img src="/docs/media/Screenshot 2024-01-12 142021.png" alt="froget password" height="300">
-    <img src="/docs/media/front1.png" alt="architecture" height="300">
+    <img src="/docs/media/Screenshot 2024-01-12 142021.png" alt="froget password" height="150">
+    <img src="/docs/media/front1.png" alt="architecture" height="150">
   </div>
   <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
     <img src="/docs/media/front3.png" alt="signin" height="300">
