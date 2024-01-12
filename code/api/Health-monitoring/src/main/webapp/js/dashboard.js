@@ -2,10 +2,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const userId = localStorage.getItem('mail');
         // Check if the user is signed in
         const userToken = localStorage.getItem('accesstoken'); // Adjust as per your authentication mechanism
-        if (!userToken) {
+        /*if (!userToken) {
             // Redirect to the sign-in page if not signed in
             window.location.href = 'welcome.html';
-        }
+        }*/
     const websocketHost = "localhost";
     const websocketPort = "8080";
     const websocketUrl = `ws://${websocketHost}:${websocketPort}/websocket`;

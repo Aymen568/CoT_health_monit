@@ -6,7 +6,7 @@ body {
     margin: 0;
     height: 100vh;
     display: flex;
-    flex-direction: column; /* Adjust to column layout */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
@@ -17,10 +17,10 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    z-index: 2; /* Place above overlay */
+    z-index: 2;
     display: flex;
-    flex-direction: row; /* Display children in a row */
-    justify-content: space-between; /* Distribute space between children */
+    flex-direction: row;
+    justify-content: space-between;
     width: 90%;
 }
 
@@ -55,81 +55,109 @@ button:hover {
 }
 
 .double-width {
-    width: 96%; /* Double the width of other buttons */
-    margin-top: 20px; /* Some spacing from above buttons */
+    width: 96%;
+    margin-top: 20px;
 }
 
 @media screen and (max-width: 768px) {
     body {
+        font-family: Arial, sans-serif;
         background: url('../media/22.jpg') center/cover;
-        height: auto; /* Adjust height to fit content */
+        color: #fff;
+        text-align: center;
+        margin: 0;
+        height: 200vh; /* Adjusted for responsiveness */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    
+    .flex-container {
+        background-color: rgba(255, 255, 255, 0.6);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        margin: 10px; /* Adjusted for spacing */
+        align-items: center;
     }
 
-    .flex-container {
-        width: 100%; /* Occupy full width on small screens */
-        margin: 10px; /* Add some margin for better spacing */
+    header {
+        margin-top: 10px; /* Adjusted for spacing */
     }
 
     .full-width-quarter {
-        width: 100%; /* Occupy full width on small screens */
-        margin: 10px 0; /* Add some margin for better spacing */
+        width: 100%;
+        margin: 10px 0;
+        padding: 20px; /* Adjusted for spacing */
     }
 
     .measure-section,
     .historic-section {
-        flex: none; /* Remove flex on small screens */
-        width: 100%; /* Occupy full width on small screens */
-        margin: 10px 0; /* Add some margin for better spacing */
+        width: 100px; /* Adjusted for responsiveness */
+        margin: 10px 0;
     }
 
     button {
-        margin-right: 0; /* Remove right margin on buttons for better spacing */
+        margin-right: 0;
     }
 
     .double-width {
-        width: 100%; /* Occupy full width on small screens */
-        margin-top: 10px; /* Adjust spacing from above buttons */
+        width: 100%;
+        margin-top: 10px;
     }
 
     #userOptions {
-        position: static; /* Reset position to static on small screens */
-        margin-top: 10px; /* Add margin at the top */
-        text-align: center; /* Center align the user options */
+        position: static;
+        margin-top: 10px;
+        text-align: center;
     }
 
     #sensorContainer,
     #actionButtons,
     #userOptions,
     #sensorTableContainer {
-        margin-top: 10px; /* Add some spacing between sections */
+        margin-top: 10px;
     }
 
     #actionButtons,
     #userOptions {
-        flex-direction: column; /* Stack buttons vertically on small screens */
-        align-items: center; /* Center align the buttons */
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    /* Additional styles to handle potential errors on small screens */
+    #sensorTableContainer {
+        overflow-x: auto; /* Add horizontal scrollbar if needed */
     }
 }
 
+
 .measure-section h2, .historic-section h2 {
-    color: #808080; /* Change to your desired gray color */
+    color: #808080;
 }
+
 #sensorContainer,
 #actionButtons,
 #userOptions,
 #sensorTableContainer {
-    margin-top: 20px; /* Add some spacing between sections */
+    margin-top: 20px;
 }
 
 #actionButtons,
 #userOptions {
     display: flex;
     gap: 10px;
-    justify-content: center; /* Center the buttons */
+    justify-content: center;
 }
 
 #userOptions {
     position: absolute;
-    top: 10px;
+    top: 30px;
     right: 10px;
 }
