@@ -57,6 +57,15 @@ Multiple technologies, plugins, packages and hardware sensors were used while de
         - Ecg-module-ad8232-heart-pulse-rate-sensor
         - LCD
 
+
+## Implementation
+
+We followed a comprehensive guide for installing and configuring the Wildfly server, focusing on steps outlined for Azure virtual machine deployment. The guide covered essential tasks such as certificate provisioning and network configuration.
+
+Regarding the sensor components, the Arduino code responsible for collecting sensor data is located in the embedding folder. The reader.py file is dedicated to implementing the UART protocol for serial communication. Another file manages the communication between the sensor and the broker through the Raspberry Pi.
+
+For the client side, the 'health monitoring/Web-App' folder contains detailed information about both the front-end and back-end implementations. Within the Health Monitoring section, the middleware architecture is documented as the final component of the system.
+
 ## Deployment Server
 
 We used A virtual machines from Microsoft Azure Cloud for running the project. (Basically, Azure provides us with a 100$ to use them to try the different Azure products).
