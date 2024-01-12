@@ -12,7 +12,7 @@ The IoT system is crafted with the following functionalities:
 - Processing data to predict abnormal or normal conditions.
 - Alerting the user by promptly sending an email to their designated emergency contact.
 ## Demo
-As for now, you can test the application directly from your browser at https://labidiaymen.me/api 
+As for now, you can test the application directly from your browser at https://labidiaymen.me/welcome.html
 ## Installation guide
 
 We made sure that the architecture of the repository was well organized for users to test the project locally or build on it. If you want to run the application locally, please follow the following steps:
