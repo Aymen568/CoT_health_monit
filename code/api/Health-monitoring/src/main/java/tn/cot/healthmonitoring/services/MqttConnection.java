@@ -56,8 +56,8 @@ public class MqttConnection {
             mqttConnectOptions.setUserName(username);
             mqttConnectOptions.setPassword(password.toCharArray());
             //mqttConnectOptions.setSocketFactory(SSLSocketFactory.getDefault());
-            mqttConnectOptions.setKeepAliveInterval(1200000);
-            mqttConnectOptions.setConnectionTimeout(1200000);
+            mqttConnectOptions.setKeepAliveInterval(12000000);
+            mqttConnectOptions.setConnectionTimeout(12000000);
             mqttConnectOptions.setAutomaticReconnect(true);
             client.connect(mqttConnectOptions);
 
@@ -105,8 +105,8 @@ public class MqttConnection {
                 }
             });
 
-            client.subscribe("health", 1);
-            client.subscribe("clients/clientid", 1);
+            client.subscribe("health", 2);
+            client.subscribe("clients/clientid", 2);
         } catch (MqttException e) {
             throw new RuntimeException(e);
         }

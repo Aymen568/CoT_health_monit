@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const websocketHost = "localhost";
     const websocketPort = "8080";
     const websocketUrl = `ws://${websocketHost}:${websocketPort}/websocket`;
-    const apiUrl = "https://127.0.0.1:5000/predict";
-    const mqtturl ='http://192.168.1.104:1880/start'
+    const apiUrl = "http://127.0.0.1:5000/predict";
+    const mqtturl ='http://192.168.1.102:1880/start'
     let normalVal =0;
     let ubnormalVal = 0;
     let dataList = [];
@@ -166,39 +166,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 ecgChart.data.datasets[0].data = [];
                 ecgChart.update();
 
-                // Trigger the exec node in Node-RED
-                const mqtturl = 'http://192.168.1.104:1880/start';  // Replace with the actual URL
-
-                await fetch(mqtturl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Accept: 'application/json',
-                    },
-
-                });
-
     }
     // Update the ECG chart
     function updateChart(value) {
         console.log("Updating chart with value:", value);
+        if (isMeasurementStarted){
+            const timestampInMillis = Date.now();
+            const minutes = Math.floor((timestampInMillis / (1000 * 60)) % 60);
+            const seconds = Math.floor((timestampInMillis / 1000) % 60);
+            const milliseconds = timestampInMillis % 1000;
+            const time = milliseconds + 1000* seconds;
+            console.log(`Minutes: ${minutes}, Seconds: ${seconds}, Milliseconds: ${milliseconds}`);
+            ecgChart.data.labels.push(time);
+            ecgChart.data.datasets[0].data.push(value);
 
-
-        const timestampInMillis = Date.now();
-        const minutes = Math.floor((timestampInMillis / (1000 * 60)) % 60);
-        const seconds = Math.floor((timestampInMillis / 1000) % 60);
-        const milliseconds = timestampInMillis % 1000;
-        const time = milliseconds + 1000* seconds;
-        console.log(`Minutes: ${minutes}, Seconds: ${seconds}, Milliseconds: ${milliseconds}`);
-        ecgChart.data.labels.push(time);
-        ecgChart.data.datasets[0].data.push(value);
-
-        if (ecgChart.data.labels.length > 50) {
-            ecgChart.data.labels.shift();
-            ecgChart.data.datasets[0].data.shift();
+            if (ecgChart.data.labels.length > 200 ) {
+                ecgChart.data.labels.shift();
+                ecgChart.data.datasets[0].data.shift();
+            }
+            ecgChart.update();
+            console.log("new data is :", ecgChart.data.datasets[0].data);
         }
-        ecgChart.update();
-        console.log("new data is :", ecgChart.data.datasets[0].data);
+
+
     }
 
     // Function to update the data list and UI
