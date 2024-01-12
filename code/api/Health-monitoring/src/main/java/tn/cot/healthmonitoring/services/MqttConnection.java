@@ -56,8 +56,8 @@ public class MqttConnection {
             mqttConnectOptions.setUserName(username);
             mqttConnectOptions.setPassword(password.toCharArray());
             //mqttConnectOptions.setSocketFactory(SSLSocketFactory.getDefault());
-            mqttConnectOptions.setKeepAliveInterval(120000);
-            mqttConnectOptions.setConnectionTimeout(120000);
+            mqttConnectOptions.setKeepAliveInterval(1200000);
+            mqttConnectOptions.setConnectionTimeout(1200000);
             mqttConnectOptions.setAutomaticReconnect(true);
             client.connect(mqttConnectOptions);
 

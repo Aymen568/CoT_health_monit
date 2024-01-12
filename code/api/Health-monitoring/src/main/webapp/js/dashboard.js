@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const websocketHost = "localhost";
     const websocketPort = "8080";
     const websocketUrl = `ws://${websocketHost}:${websocketPort}/websocket`;
-    const apiUrl = "http://127.0.0.1:5000/predict";
+    const apiUrl = "https://127.0.0.1:5000/predict";
     const mqtturl ='http://192.168.1.104:1880/start'
     let normalVal =0;
     let ubnormalVal = 0;
@@ -352,6 +352,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         const predictionResultElement = document.getElementById("Result");
                         predictionResultElement.innerText = `Prediction: ${result}`;
+                        // Apply styles based on the result
+                        if (result === "NORMAL") {
+                            // Green for NORMAL
+                            predictionResultElement.style.color = "green";
+                        } else if (result === "Abnormal") {
+                            // Red for Abnormal
+                            predictionResultElement.style.color = "red";
+                        }
+                        // Center the element
+                        predictionResultElement.style.textAlign = "center";
                         updateChartBasedOnPrediction(result);
 
                         let content = "The user " + Username + " having the phone number " + Phone;
