@@ -4,6 +4,7 @@
 ## Overview
 
 The project aims to develop a comprehensive system that combines cardiac and respiratory monitoring to enable early detection and prevention of heart rate disorders, with a specific focus on Atrial Fibrillation (AFib). Heart diseases, including AFib, stand as leading causes of global mortality. Recognizing the imperative for accurate detection and continuous monitoring, the project seeks to address the limitations present in current solutions.
+
 ## Functionnalities
 The IoT system is crafted with the following functionalities:
 
@@ -11,6 +12,7 @@ The IoT system is crafted with the following functionalities:
 - Capturing and analyzing the user's ECG signals.
 - Processing data to predict abnormal or normal conditions.
 - Alerting the user by promptly sending an email to their designated emergency contact.
+  
 ## Demo
 As for now, you can test the application directly from your browser at https://labidiaymen.me/welcome.html
 ## Installation guide
@@ -93,3 +95,6 @@ HTTPS was ensured using Let's Encrypt's Certbot, providing secure communication 
 ## Results 
 
 Below, you will find the website architecture, as well as the materials hierarchy used for testing the system that we have established during this project.
+<div align="center">
+  <img src="/docs/media/front1.png" alt="architecture" height="500"><img src="/docs/media/front1.png" alt="architecture" height="500"> <img src="/docs/media/Screenshot 2024-01-12 142021.png" alt="architecture" height="500">    
+</div>
