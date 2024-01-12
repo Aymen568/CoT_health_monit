@@ -21,7 +21,7 @@ We made sure that the architecture of the repository was well organized for user
     - Install Wildfly30, with Java 21.
     - Install Nodered on your Raspberry pi and then load the content of embedded folder into your raspberry pi. Feel free to change the sensors and actuators pins, the MQTT broker, and the API link for getting a list of installed sensors.
     - Configure  HTTPS/HSTS for Wildfly.
-     - Open microprofile.config.properties and set your settings (certificate path, MQTT broker settings, and you Mongodb link).
+    - Open microprofile.config.properties and set your settings (certificate path, MQTT broker settings, and you Mongodb link).
     - Move into the Health-monitoring directory and run nvm clean package to install the required dependencies.
     - Deploy the war file created in the target forlder in the deployment folder, and start your wildfly server. 
     
