@@ -60,13 +60,54 @@ button:hover {
 }
 
 @media screen and (max-width: 768px) {
-    .flex-container {
-        flex-direction: column;
-        align-items: center;
+    body {
+        background: url('../media/22.jpg') center/cover;
+        height: auto; /* Adjust height to fit content */
     }
 
-    .third {
-        margin-right: 0; /* Remove spacing between sections on small screens */
+    .flex-container {
+        width: 100%; /* Occupy full width on small screens */
+        margin: 10px; /* Add some margin for better spacing */
+    }
+
+    .full-width-quarter {
+        width: 100%; /* Occupy full width on small screens */
+        margin: 10px 0; /* Add some margin for better spacing */
+    }
+
+    .measure-section,
+    .historic-section {
+        flex: none; /* Remove flex on small screens */
+        width: 100%; /* Occupy full width on small screens */
+        margin: 10px 0; /* Add some margin for better spacing */
+    }
+
+    button {
+        margin-right: 0; /* Remove right margin on buttons for better spacing */
+    }
+
+    .double-width {
+        width: 100%; /* Occupy full width on small screens */
+        margin-top: 10px; /* Adjust spacing from above buttons */
+    }
+
+    #userOptions {
+        position: static; /* Reset position to static on small screens */
+        margin-top: 10px; /* Add margin at the top */
+        text-align: center; /* Center align the user options */
+    }
+
+    #sensorContainer,
+    #actionButtons,
+    #userOptions,
+    #sensorTableContainer {
+        margin-top: 10px; /* Add some spacing between sections */
+    }
+
+    #actionButtons,
+    #userOptions {
+        flex-direction: column; /* Stack buttons vertically on small screens */
+        align-items: center; /* Center align the buttons */
     }
 }
 
