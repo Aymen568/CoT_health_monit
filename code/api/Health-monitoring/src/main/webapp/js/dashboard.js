@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function fetchDataAndCreateChart(userId) {
         try {
-            const response = await fetch(`https://labidiaymen.me/api/getvalues/${userId}`, { method: 'GET' });
+            const response = await fetch(`https://labidiaymen.me/api/user/getvalues/${userId}`, { method: 'GET' });
 
             if (!response.ok) {
                 throw new Error(`Failed to fetch data. Status: ${response.status}`);
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         updatePercentage(normalVal, ubnormalVal);
         $.ajax({
-            url: `https://labidiaymen.me/api/setvalues/${userId}`,
+            url: `https://labidiaymen.me/api/user/setvalues/${userId}`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({ normal: result }),

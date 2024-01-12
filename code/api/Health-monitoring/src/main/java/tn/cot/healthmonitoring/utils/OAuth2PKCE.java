@@ -35,7 +35,6 @@ public class OAuth2PKCE {
     // Hashmap to store the authorization code
     private final Map<String,Identity> identities = new HashMap<>();
     //Hashmap to store the identities
-
     public String addChallenge(String codeChallenge,String clientId){
         //store the code challenge in the hashmap and generate the signinId
         String signInId = clientId+"#"+UUID.randomUUID().toString();
