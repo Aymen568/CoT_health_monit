@@ -60,11 +60,11 @@ Multiple technologies, plugins, packages and hardware sensors were used while de
 
 ## Implementation
 
-We followed a comprehensive guide for installing and configuring the Wildfly server, focusing on steps outlined for Azure virtual machine deployment. The guide covered essential tasks such as certificate provisioning and network configuration.
+We adhered to a comprehensive guide that provided step-by-step instructions for the installation and configuration of the Wildfly server, with a specific focus on deployment within an Azure virtual machine. The guide encompassed critical tasks, including certificate provisioning and network configuration.
 
-Regarding the sensor components, the Arduino code responsible for collecting sensor data is located in the embedding folder. The reader.py file is dedicated to implementing the UART protocol for serial communication. Another file manages the communication between the sensor and the broker through the Raspberry Pi.
+Concerning the sensor components, the Arduino code responsible for gathering sensor data can be found in the "embedding" folder. The "reader.py" file is dedicated to the implementation of the UART protocol for serial communication, while another file manages communication between the sensor and the broker through the Raspberry Pi.
 
-For the client side, the 'health monitoring/Web-App' folder contains detailed information about both the front-end and back-end implementations. Within the Health Monitoring section, the middleware architecture is documented as the final component of the system.
+On the client side, detailed information about both the front-end and back-end implementations can be located in the 'health monitoring/Web-App' folder. Within the Health Monitoring section, the middleware architecture is documented as the final component of the system.
 
 ## Deployment Server
 
@@ -89,3 +89,7 @@ HTTPS was ensured using Let's Encrypt's Certbot, providing secure communication 
 <div align="center">
   <img src="/docs/media/certificate.png" alt="architecture" height="500">
 </div>
+
+## Results 
+
+Below, you will find the website architecture, as well as the materials hierarchy used for testing the system that we have established during this project.
