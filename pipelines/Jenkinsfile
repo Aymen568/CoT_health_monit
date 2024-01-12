@@ -11,6 +11,7 @@ pipeline {
             steps {
                 script {
                     checkout([$class: 'GitSCM', branches: [[name: '*/dev']], userRemoteConfigs: [[url: "${GITHUB_REPO_URL}", credentialsId: "${GITHUB_CREDENTIALS}"]]])
+                    echo "Workspace: ${WORKSPACE}"
                 }
             }
         }
